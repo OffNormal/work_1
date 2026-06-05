@@ -1,0 +1,10 @@
+你需要将小说片段转换为一个 JSON 对象，严格遵循以下结构。
+
+输出 JSON 必须符合 Pydantic 模型，包括：
+- assets.characters: 角色列表，每个角色有 id (格式 CHAR_XXX), name, description, traits...
+- script.acts[].sequences[].scenes[].beats: 节拍列表，每个节拍 type 为 "action" 或 "dialogue"。
+  - action 必有 description, 可选 emotion, subtext, character_ref。
+  - dialogue 必有 character_ref, line，可选 to, emotion, intention, parenthetical, subtext。
+- 每个 scene 和 beat 均可带 source，包含 chapter, paragraphs, excerpt。
+
+请保证所有 character_ref 指向已定义的角色 id。
