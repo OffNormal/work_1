@@ -314,6 +314,8 @@ def generate_beats_for_scene(scene: Scene, assets: AssetBox, model: str = "deeps
 def review_beats(scene: Scene, assets: AssetBox) -> dict:
     """
     审核单个场景的节拍质量，返回 {"pass": bool, "issues": [str]}
+    - 自动修正可识别的英文情绪并记录日志
+    - 允许通过，但会将修正信息作为 issues 提示
     """
     issues = []
     valid_ids = {c.id for c in assets.characters}
@@ -321,16 +323,34 @@ def review_beats(scene: Scene, assets: AssetBox) -> dict:
         "高兴", "愤怒", "悲伤", "惊讶", "恐惧", "厌恶", "紧张", "兴奋",
         "好奇", "冷漠", "得意", "不屑", "无奈", "坚定", "犹豫", "感动", "尴尬"
     }
+    # 英文→中文情绪映射表
+    emotion_map = {
+        "shock": "震惊", "awe": "敬畏", "disbelief": "难以置信", "urgent": "急迫",
+        "angry": "愤怒", "sad": "悲伤", "surprised": "惊讶", "fear": "恐惧",
+        "disgusted": "厌恶", "nervous": "紧张", "excited": "兴奋", "curious": "好奇",
+        "indifferent": "冷漠", "proud": "得意", "disdainful": "不屑", "helpless": "无奈",
+        "firm": "坚定", "hesitant": "犹豫", "touched": "感动", "embarrassed": "尴尬",
+        "confident": "自信", "calm": "冷静", "anxious": "焦虑", "confused": "困惑",
+    }
+
+    # 检测群体角色名称的关键词
+    group_name_keywords = ["众人", "所有人", "宇航员们", "科学家们", "大家", "一群人", "队员们"]
 
     for i, beat in enumerate(scene.beats):
-        # 1. 角色引用检查
+        # ===== 1. 角色引用检查 =====
         if beat.character_ref and beat.character_ref != "GROUP":
             if not beat.character_ref.startswith("TEMP_") and beat.character_ref not in valid_ids:
                 issues.append(f"Beat {i}: character_ref '{beat.character_ref}' 不在资产库中且非临时角色ID")
+            else:
+                # 检查角色是否为不应存在的群体角色
+                char = next((c for c in assets.characters if c.id == beat.character_ref), None)
+                if char and any(kw in char.name for kw in group_name_keywords):
+                    issues.append(f"Beat {i}: 角色 '{char.name}' 是群体角色，应拆分为个体")
+
         if beat.to and beat.to not in valid_ids and not beat.to.startswith("TEMP_"):
             issues.append(f"Beat {i}: 对话对象 '{beat.to}' 不在资产库中且非临时角色ID")
 
-        # 2. 字段完整性检查
+        # ===== 2. 字段完整性检查 =====
         if beat.type == "dialogue":
             if not beat.line or beat.line.strip() == "":
                 issues.append(f"Beat {i}: 对话缺少 line")
@@ -338,27 +358,41 @@ def review_beats(scene: Scene, assets: AssetBox) -> dict:
             if not beat.description or beat.description.strip() == "":
                 issues.append(f"Beat {i}: 动作缺少 description")
 
-        # 3. 情绪语言检查（只允许中文白名单词汇）
-        if beat.emotion and beat.emotion not in allowed_emotions:
-            issues.append(f"Beat {i}: 情绪 '{beat.emotion}' 不在标准词表中")
+        # ===== 3. 情绪检查与自动修正 =====
+        if beat.emotion:
+            # 如果是英文且可映射，自动修正并记录（不阻止通过）
+            if beat.emotion in emotion_map:
+                old_emotion = beat.emotion
+                beat.emotion = emotion_map[beat.emotion]
+                issues.append(f"Beat {i}: 情绪 '{old_emotion}' 已自动修正为 '{beat.emotion}'")
+            elif beat.emotion not in allowed_emotions:
+                issues.append(f"Beat {i}: 情绪 '{beat.emotion}' 不在标准词表中")
 
-        # 4. Beat 原子性检查：description 或 line 中是否包含多个角色的动作或对话
-        combined_text = (beat.description or "") + (beat.line or "")
-        # 简单启发：如果文本中出现多个角色名+动作词，可能是合并节拍
-        # 检查是否同时包含“XX说”和多于一个的引号，或包含“一边...一边...”
-        if beat.type == "action" and ("“" in beat.description or "”" in beat.description):
-            issues.append(f"Beat {i}: 动作节拍中包含了对话文本，应拆分为 dialogue beat")
-        if beat.type == "action" and ("一边" in beat.description and "一边" in beat.description):
-            issues.append(f"Beat {i}: 动作节拍包含多个并行动作，可能需拆分")
-        # 更严格的判断：description 中如果出现两个及以上资产库中的角色名，可能合并了多个主体的动作
-        if beat.type == "action":
-            found_chars = [cid for cid in valid_ids if cid in beat.description]
+        # ===== 4. Beat 原子性检查 =====
+        # 安全获取 description，避免 None 引发错误
+        desc = beat.description or ""
+        line = beat.line or ""
+
+        # 动作节拍中包含了对话文本（带引号或冒号引导的说话）
+        if beat.type == "action" and desc:
+            if "“" in desc or "”" in desc or "：" in desc:
+                issues.append(f"Beat {i}: 动作节拍中包含了对话文本，应拆分为 dialogue beat")
+            if "一边" in desc and desc.count("一边") >= 2:
+                issues.append(f"Beat {i}: 动作节拍包含多个并行动作，可能需拆分")
+            # 检查是否包含两个及以上已知角色ID（说明多个主体被合并）
+            found_chars = [cid for cid in valid_ids if cid in desc]
             if len(found_chars) >= 2:
-                issues.append(f"Beat {i}: 动作节拍包含多个角色主体 ({found_chars})，可能需拆分")
-        # 调试日志（可配置开关）
-    for i, beat in enumerate(scene.beats):
+                issues.append(f"Beat {i}: 动作节拍包含多个角色主体 ({found_chars})，应拆分")
+
+        # 对话节拍中包含了明显的动作描述（如“说”字以外的动词，可选的额外检查）
+        # 此处暂不强制，但可记录
+        if beat.type == "dialogue" and line:
+            # 如果 line 以动作描述开头且包含“说”以外的动词，可能有问题
+            pass
+
+        # ===== 5. 调试日志（合并到主循环） =====
         print(f"    [审核] Beat {i}: type={beat.type}, character={beat.character_ref}, emotion='{beat.emotion}'")
-        
+
     return {"pass": len(issues) == 0, "issues": issues}
 
 
