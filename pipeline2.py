@@ -149,97 +149,129 @@ def _fallback_completion(system_prompt: str, user_prompt: str, model: str, clien
 # ============================================================
 # 核心流水线函数
 # ============================================================
-def extract_assets(novel_text: str, model: str = "deepseek-chat") -> AssetBox:
-    """第一步：提取角色、地点、道具，要求遍历所有出现的人物和地点"""
-    system = """你是一位专业的剧本分析师。请从给定的小说片段中提取所有角色，必须满足：
-- **禁止使用群体角色**：不能创建代表“众人”“宇航员们”之类的聚合角色。必须将群体拆解为单独个体（如“宇航员A”“宇航员B”），即使原文未给出具体名字，也请使用“CHAR_XXX_1, 名字：宇航员A”的格式。
-- 每个角色分配唯一 ID，包含姓名、类型、简短描述、性格特点和语气。
-- 如果某个角色只在单一场景出现且无名，也需提取，类型设为“supporting”，描述可简述其功能。
-- 地点提取同样需覆盖所有场景。
+def run_agent(agent_file: str, user_prompt: str, model: str = "deepseek-chat", 
+            skills: list = None, assets: AssetBox = None, scene: Scene = None) -> dict:
+    """
+    通用 Agent 执行器：加载 Agent 定义 → 调用 LLM → 返回结果。
+    **不再承担审核职责**，审核由上层调用专门的 apply_*_review 完成。
+    """
+    agent_content = load_markdown(f"agents/{agent_file}.md")
+    system = agent_content
+
+    # 如果指定了 skills，将它们作为【写作规范】注入，但不作为审核
+    # （与审核 Skill 分开，这里的 skill 是指导生成的，不是审核的）
+    if skills:
+        skill_texts = []
+        for sk in skills:
+            sk_content = load_markdown(f"skills/{sk}.md")
+            if sk_content:
+                skill_texts.append(sk_content)
+        if skill_texts:
+            system += "\n\n【写作规范】\n" + "\n".join(skill_texts)
+
+    system += "\n\n请输出一个严格的 JSON 对象，不要包含 markdown 标记或额外解释。"
+    return structured_completion(system, user_prompt, model)
+
+def apply_asset_review(asset_data: dict, skill_content: str, model: str) -> dict:
+    """资产审核"""
+    review_prompt = f"""请根据以下审核规则审核提取的资产，并给出审核结果。
+
+## 审核规则
+{skill_content}
+
+## 资产数据
+{json.dumps(asset_data, ensure_ascii=False, indent=2)}
+
+返回 JSON: {{ "pass": true/false, "issues": ["问题"] }}
 """
-    class AssetResponse(BaseModel):
-        characters: List[Character] = []
-        locations: List[Location] = []
-        props: List[str] = []
+    try:
+        res = structured_completion("你是严格的资产审核员。只输出 JSON。", review_prompt, model)
+        return {"pass": res.get("pass", False), "issues": res.get("issues", [])}
+    except:
+        return {"pass": False, "issues": ["资产审核执行失败"]}
 
-    schema_desc = json.dumps(AssetResponse.model_json_schema(),indent=2)
-    system_with_schema = system + "\n输出必须符合以下 JSON Schema:\n" + schema_desc
-    user = f"小说内容：\n{novel_text}\n\n请提取资产。"
-    result = structured_completion(system_with_schema, user, model)
-    return AssetBox(**result)
+def apply_scene_review(scenes_data: dict, skill_content: str, model: str) -> dict:
+    """场景切分审核"""
+    review_prompt = f"""请根据以下审核规则审核场景切分，并给出审核结果。
+
+## 审核规则
+{skill_content}
+
+## 场景数据
+{json.dumps(scenes_data, ensure_ascii=False, indent=2)}
+
+返回 JSON: {{ "pass": true/false, "issues": ["问题"] }}
+"""
+    try:
+        res = structured_completion("你是严格的场景审核员。只输出 JSON。", review_prompt, model)
+        return {"pass": res.get("pass", False), "issues": res.get("issues", [])}
+    except:
+        return {"pass": False, "issues": ["场景审核执行失败"]}
 
 
+def extract_assets(novel_text: str, model: str = "deepseek-chat") -> AssetBox:
+    user_prompt = f"小说内容：\n{novel_text}\n\n请提取资产。"
+    review_skill = load_markdown("skills/asset-review.md")
+
+    max_retries = 2
+    for retry in range(max_retries + 1):
+        result = run_agent("asset-extractor", user_prompt, model)
+        # 独立审核
+        review = apply_asset_review(result, review_skill, model)
+        if review["pass"]:
+            break
+        elif retry < max_retries:
+            print(f"  🔄 资产审核未通过，重试 {retry+1}/{max_retries}")
+            user_prompt += f"\n\n【上一版问题】\n" + "\n".join(review["issues"])
+        else:
+            print(f"  ⚠️ 资产审核未通过，保留当前版本")
+
+    return AssetBox(
+        characters=[Character(**c) for c in result.get("characters", [])],
+        locations=[Location(**l) for l in result.get("locations", [])],
+        props=result.get("props", [])
+    )
 
 def segment_scenes_with_text(novel_text: str, assets: AssetBox, model: str = "deepseek-chat") -> List[Scene]:
-    """第二步：切分场景并返回每个场景对应的原文片段，保证线性时序"""
+    """第二步：切分场景，带审核，补录地点和临时角色"""
     char_list = "\n".join([f"{c.id}: {c.name}（{c.type}）" for c in assets.characters])
     loc_list = "\n".join([f"{l.id}: {l.name} ({l.type})" for l in assets.locations])
-    system = """你是剧本分场专家。请严格按照原文的叙事顺序，将故事切分成连续且不重叠的场景。你必须遵守以下铁律：
+    user_prompt = f"角色列表：\n{char_list}\n\n地点列表：\n{loc_list}\n\n小说内容：\n{novel_text}"
+    review_skill = load_markdown("skills/scene-segmentation-review.md")
 
-1. **线性不重叠原则**：原文的每一段只能属于一个场景，相邻场景的 source_text 必须首尾相接、无缝衔接，绝对不允许有任何内容上的重复或覆盖。
-2. **切分点识别**：仅在时间、地点或主要人物发生重大转换时切分。如果同一地点内发生了连续事件，即使视角切换，也不应拆分，应归入一个场景。
-3. **source_text 精确性**：每个场景的 source_text 必须是从原文中直接摘抄的连续段落，不得概括、重组或添加任何原文没有的词语。
-4. **无视角跳跃**：一个场景内不得突然切换至另一地点或另一批人物的视角（除非原文明确如此）。如果原文中视角切换了，那很可能意味着新场景的开始。
-5. 如果场景中出现资产库中没有的临时角色，请在 summary 中注明“临时角色：TEMP01-角色名”等，以便自动注册。
+    max_retries = 2
+    for retry in range(max_retries + 1):
+        result = run_agent("scene-segmenter", user_prompt, model)
+        review = apply_scene_review(result, review_skill, model)
+        if review["pass"]:
+            break
+        elif retry < max_retries:
+            print(f"  🔄 场景切分审核未通过，重试 {retry+1}/{max_retries}")
+            user_prompt += f"\n\n【上一版问题】\n" + "\n".join(review["issues"])
+        else:
+            print(f"  ⚠️ 场景切分审核未通过，保留当前版本")
 
-其他要求：
-- scene_id: 场次编号 S01, S02...
-- slug: 标准场标 "INT./EXT. 地点 - 时间"
-- location_ref: 从地点列表选择，无匹配则新建ID
-- time_of_day: 日/夜/黄昏等
-- summary: 该场景的简要情节
-- intention: 创作意图
-- source_text: 该场景对应的完整原文段落（严禁概括）
-"""
+    scenes = [Scene(**s) for s in result.get("scenes", [])]
 
-    class SceneList(BaseModel):
-        scenes: List[Scene] = []
-
-    schema_desc = json.dumps(SceneList.model_json_schema(),indent=2)
-    system_with_schema = system + "\n输出必须符合以下 JSON Schema (注意 scenes 是数组):\n" + schema_desc
-    user = f"角色列表：\n{char_list}\n\n地点列表：\n{loc_list}\n\n小说内容：\n{novel_text}"
-    result = structured_completion(system_with_schema, user, model)
-    scenes = [Scene(**s) for s in result["scenes"]]
-    
-    
+    # 动态补录地点和临时角色（与之前相同）
+    existing_loc_ids = {l.id for l in assets.locations}
+    for scene in scenes:
+        if scene.location_ref and scene.location_ref not in existing_loc_ids:
+            loc_name = scene.slug.split(" - ")[0].replace("INT. ", "").replace("EXT. ", "")
+            assets.locations.append(Location(id=scene.location_ref, name=loc_name,
+                                            type="INT" if "INT." in scene.slug else "EXT", description="自动补录"))
+            existing_loc_ids.add(scene.location_ref)
+    # 临时角色注册（与之前相同）
     temp_char_pattern = re.compile(r'临时角色[：:]\s*(TEMP\d+)[-]\s*([^，,\n]+)')
     for scene in scenes:
         for match in temp_char_pattern.finditer(scene.summary):
             temp_id = match.group(1)
             temp_name = match.group(2).strip()
             if not any(c.id == temp_id for c in assets.characters):
-                assets.characters.append(Character(
-                    id=temp_id,
-                    name=temp_name,
-                    type="supporting",
-                    description="临时群演"
-                ))
-    # 地点补录（已有逻辑，但需要检查是否执行）
-    existing_loc_ids = {l.id for l in assets.locations}
-    for scene in scenes:
-        if scene.location_ref and scene.location_ref not in existing_loc_ids:
-            loc_name = scene.slug.split(" - ")[0].replace("INT. ", "").replace("EXT. ", "")
-            assets.locations.append(Location(
-                id=scene.location_ref,
-                name=loc_name,
-                type="INT" if "INT." in scene.slug else "EXT",
-                description="自动补录"
-            ))
-            existing_loc_ids.add(scene.location_ref)
-
-    # 简易重叠检测：如果相邻场景的 source_text 存在较长重复，打印警告
-    # 去重检测：计算相邻场景 source_text 的重叠词数，若超过阈值则强制修正
-    for i in range(len(scenes)-1):
-        if scenes[i].source_text and scenes[i+1].source_text:
-            words_a = set(scenes[i].source_text.split())
-            words_b = set(scenes[i+1].source_text.split())
-            if words_a and words_b:
-                overlap_ratio = len(words_a & words_b) / min(len(words_a), len(words_b))
-                if overlap_ratio > 0.3:  # 重叠超过30%视为严重重复
-                    print(f"  ⚠️ 严重重叠：{scenes[i].scene_id} 与 {scenes[i+1].scene_id}，重叠率 {overlap_ratio:.2f}，将自动裁剪")
-                    # 简单裁剪策略：保留 scenes[i] 的 source_text，将 scenes[i+1] 的 source_text 中与 scenes[i] 重叠的部分删除
-                    # 注：实际精确裁剪较复杂，此处先标记并在日志中提示人工干预
+                assets.characters.append(Character(id=temp_id, name=temp_name, type="supporting", description="临时群演"))
     return scenes
+
+
 
 def load_markdown(filepath: str) -> str:
     with open(filepath, 'r', encoding='utf-8') as f:
