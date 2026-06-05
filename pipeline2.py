@@ -209,24 +209,28 @@ def segment_scenes_with_text(novel_text: str, assets: AssetBox, model: str = "de
     return scenes
 
 def generate_beats_for_scene(scene: Scene, assets: AssetBox, model: str = "deepseek-chat") -> Scene:
-    """第三步：为单个场景生成节拍，只传入该场景的 source_text"""
+    """第三步：为单个场景生成节拍，带审核与自动回改，使用外部 reference"""
     if not scene.source_text:
-        # 若没有原文片段，跳过
         scene.beats = []
         return scene
 
+    # 读取外部参考标准
+    try:
+        with open("references/01-beat-writing-standard.md", "r", encoding="utf-8") as f:
+            beat_standard = f.read()
+    except FileNotFoundError:
+        beat_standard = ""  # 降级为空
+
     char_list = "\n".join([f"{c.id}: {c.name}" for c in assets.characters])
 
-    system = """你是一位剧作家。请将下面的场景原文转换为一系列表演节拍（beats）。
+    system = f"""你是一位剧作家。请将下面的场景原文转换为一系列表演节拍（beats）。
 每个节拍可以是动作（action）或对白（dialogue）。
-- action: 必须包含 description（动作描述）和 emotion（情绪），character_ref 必填（除非是环境/群体动作，可用 "GROUP" 或留空，但尽量指定具体人物）
-- dialogue: 必须包含 character_ref（说话人）、line（台词），可选 parenthetical、emotion、subtext、to（说话对象角色ID）
-情绪请全部使用中文，从以下标准词中选择最合适的：高兴、愤怒、悲伤、惊讶、恐惧、厌恶、紧张、兴奋、好奇、冷漠、得意、不屑、无奈、坚定、犹豫、感动、尴尬、其他。
-必须遵守：
-- character_ref 必须使用提供的角色 ID，不要编造
-- 对话必须有 line 且不能为空
-- 动作必须有 description 且不能为空
-- 不要输出多余的字段，遵循 JSON Schema
+请严格遵守以下写作标准：
+{beat_standard}
+
+此外：
+- 情绪请从标准词表中选择
+- 输出必须严格符合 JSON Schema
 """
     class BeatList(BaseModel):
         beats: List[Beat] = []
@@ -235,31 +239,38 @@ def generate_beats_for_scene(scene: Scene, assets: AssetBox, model: str = "deeps
     system_with_schema = system + "\n输出必须符合以下 JSON Schema:\n" + schema_desc
     user = f"场景概要：{scene.summary}\n场景意图：{scene.intention}\n角色列表：{char_list}\n场景原文：\n{scene.source_text}"
 
-    try:
-        result = structured_completion(system_with_schema, user, model)
-        beats = []
-        for b in result["beats"]:
-            # 简单校验
-            bt = Beat(**b)
-            if bt.type == "dialogue" and (not bt.line or bt.line.strip() == ""):
-                continue  # 跳过无效对白
-            if bt.type == "action" and (not bt.description or bt.description.strip() == ""):
-                continue
-            # 统一情绪为中文（已在 prompt 要求，但做一次映射兜底）
-            if bt.emotion and bt.emotion.strip() in ["curious","excited","amused","angry","sad","surprised","fearful","disgusted","nervous","excited","curious","indifferent","proud","disdainful","helpless","firm","hesitant","touched","embarrassed","other"]:
-                # 简单映射
-                mapping = {
-                    "curious": "好奇", "excited": "兴奋", "amused": "有趣", "angry": "愤怒", "sad": "悲伤",
-                    "surprised": "惊讶", "fearful": "恐惧", "disgusted": "厌恶", "nervous": "紧张",
-                    "indifferent": "冷漠", "proud": "得意", "disdainful": "不屑", "helpless": "无奈",
-                    "firm": "坚定", "hesitant": "犹豫", "touched": "感动", "embarrassed": "尴尬"
-                }
-                bt.emotion = mapping.get(bt.emotion.strip(), bt.emotion)
-            beats.append(bt)
-        scene.beats = beats
-    except Exception as e:
-        print(f"  ❌ 场景 {scene.scene_id} 节拍生成失败: {e}")
-        scene.beats = []
+    max_retries = 2
+    for retry in range(max_retries + 1):
+        try:
+            result = structured_completion(system_with_schema, user, model)
+            beats = []
+            for b in result["beats"]:
+                bt = Beat(**b)
+                if bt.type == "dialogue" and (not bt.line or bt.line.strip() == ""):
+                    continue
+                if bt.type == "action" and (not bt.description or bt.description.strip() == ""):
+                    continue
+                beats.append(bt)
+            scene.beats = beats
+
+            # 审核
+            review = review_beats(scene, assets)
+            if review["pass"]:
+                break  # 通过，结束重试
+            else:
+                if retry < max_retries:
+                    print(f"  🔄 场景 {scene.scene_id} 审核未通过，重试 {retry+1}/{max_retries}")
+                    # 把问题注入 user prompt 帮助修正
+                    user += f"\n\n【上一版问题】\n" + "\n".join(review["issues"]) + "\n请修正后重新输出。"
+                else:
+                    print(f"  ⚠️ 场景 {scene.scene_id} 审核未通过，已达最大重试次数，保留当前版本")
+                    for issue in review["issues"]:
+                        print(f"     - {issue}")
+
+        except Exception as e:
+            print(f"  ❌ 场景 {scene.scene_id} 节拍生成失败: {e}")
+            scene.beats = []
+            break
     return scene
 
 def review_beats(scene: Scene, assets: AssetBox) -> dict:
