@@ -155,23 +155,6 @@ def _fallback_completion(system_prompt: str, user_prompt: str, model: str, clien
     except Exception as e:
         raise RuntimeError(f"Fallback 解析失败: {e}")
 
-#---------------------------------------------------------------------
-
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ],
-        response_format={"type": "json_object"},
-        temperature=0.3,
-        max_tokens=8192,
-        reasoning_effort="high",
-        stream=False
-    )
-    import json
-    return json.loads(response.choices[0].message.content)
-
 # ============================================================
 # 三步转换流水线
 # ============================================================
