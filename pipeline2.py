@@ -269,6 +269,26 @@ def segment_scenes_with_text(novel_text: str, assets: AssetBox, model: str = "de
             temp_name = match.group(2).strip()
             if not any(c.id == temp_id for c in assets.characters):
                 assets.characters.append(Character(id=temp_id, name=temp_name, type="supporting", description="临时群演"))
+    
+    # 地点一致性硬校验：检查每个场景的 source_text 是否包含多个地点
+    for scene in scenes:
+        if not scene.source_text or not scene.location_ref:
+            continue
+        # 获取当前场景的合法地点名称（从 assets 中查找）
+        current_loc_name = ""
+        for loc in assets.locations:
+            if loc.id == scene.location_ref:
+                current_loc_name = loc.name
+                break
+        # 其他地点名称列表
+        other_loc_names = [loc.name for loc in assets.locations if loc.id != scene.location_ref]
+        # 检查 source_text 中是否出现其他地点名称
+        found_other = [name for name in other_loc_names if name in scene.source_text]
+        if found_other:
+            print(f"  ⚠️ 场景 {scene.scene_id} 包含其他地点名称: {found_other}，可能违反单一地点原则")
+            # 简单处理：标记 issue 以便人工检查（因为自动拆分较复杂，可先报警）
+            # 如需自动处理，可尝试按段落拆分，但此处仅警告
+
     return scenes
 
 

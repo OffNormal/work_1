@@ -20,7 +20,10 @@
    - 环境描写、视觉描述应作为独立的 action beat，其 `character_ref` 设为 `GROUP`。
    - 如果一个人物在说话时同时做了动作，应拆分为一个 dialogue beat 和一个紧随的 action beat。
 5. 情绪必须从标准词表中选择，且只能使用中文。
-
+6. 地点一致性检查
+- 所有 action beat 的 `description` 和 dialogue beat 的 `line`、`parenthetical` 中，不应出现与当前场景地点不符的空间描述。  
+  若出现其他地点名称，标记为“节拍地点与场景地点冲突”。
+  
 ## 输出格式
 JSON 对象，包含一个 `beats` 数组，每个元素必须符合以下结构：
 ```json
