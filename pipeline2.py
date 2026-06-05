@@ -393,6 +393,31 @@ def beat_generator_agent(scene: Scene, assets: AssetBox, model: str = "deepseek-
                 beats.append(Beat(**b))
             scene.beats = beats
 
+            # ---- 插入点：强制情绪中文化 ----
+            emotion_map = {
+                "shock": "震惊", "awe": "敬畏", "disbelief": "难以置信", "urgent": "急迫",
+                "urgency": "急迫", "overwhelmed": "不知所措", "angry": "愤怒", "sad": "悲伤",
+                "surprised": "惊讶", "fear": "恐惧", "disgusted": "厌恶", "nervous": "紧张",
+                "excited": "兴奋", "curious": "好奇", "indifferent": "冷漠", "proud": "得意",
+                "disdainful": "不屑", "helpless": "无奈", "firm": "坚定", "hesitant": "犹豫",
+                "touched": "感动", "embarrassed": "尴尬", "confident": "自信", "calm": "冷静",
+                "anxious": "焦虑", "confused": "困惑", "utter shock": "震惊",
+                "stunned disbelief": "难以置信", "chaotic excitement": "混乱的兴奋",
+                "tense anticipation": "紧张的期待", "fading hope": "希望渐失",
+                "sudden alarm": "突然警觉", "visceral shock": "深入骨髓的震惊",
+                "stunned realization": "惊愕的领悟", "escalating horror": "逐渐加剧的恐惧",
+                "urgent fear": "急迫的恐惧", "lonely vastness": "孤寂",
+            }
+            for beat in scene.beats:
+                if beat.emotion and beat.emotion in emotion_map:
+                    old = beat.emotion
+                    beat.emotion = emotion_map[old]
+                    print(f"    [自动修正] Beat情绪 '{old}' → '{beat.emotion}'")
+                elif beat.emotion and beat.emotion.isascii():
+                    # 未在映射表中的英文情绪，统一替换为“其他”，避免中文审核误判
+                    print(f"    [警告] 未映射的英文情绪 '{beat.emotion}'，已替换为'其他'")
+                    beat.emotion = "其他"
+
             # 使用 Skill 审核
             review_result = apply_review_skill(scene, assets, review_skill, model)
             if review_result["pass"]:
