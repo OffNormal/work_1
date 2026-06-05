@@ -241,21 +241,68 @@ def segment_scenes_with_text(novel_text: str, assets: AssetBox, model: str = "de
                     # 注：实际精确裁剪较复杂，此处先标记并在日志中提示人工干预
     return scenes
 
-def generate_beats_for_scene(scene: Scene, assets: AssetBox, model: str = "deepseek-chat") -> Scene:
-    """第三步：为单个场景生成节拍，带审核与自动回改，使用外部 reference"""
+def load_markdown(filepath: str) -> str:
+    with open(filepath, 'r', encoding='utf-8') as f:
+        return f.read()
+
+def load_skills(skill_names: list) -> dict:
+    skills = {}
+    for name in skill_names:
+        path = f"skills/{name}.md"
+        if os.path.exists(path):
+            skills[name] = load_markdown(path)
+        else:
+            print(f"  ⚠️ Skill {name} 文件未找到，跳过")
+    return skills
+
+def apply_review_skill(scene: Scene, assets: AssetBox, skill_content: str, model: str = "deepseek-chat") -> dict:
+    """将审核规则（Skill Markdown）交给 LLM 执行，返回 {'pass': bool, 'issues': [str]}"""
+    valid_ids = {c.id for c in assets.characters}
+    beats_json = json.dumps(
+        [beat.dict(exclude_none=True) for beat in scene.beats],
+        ensure_ascii=False,
+        indent=2
+    )
+    review_prompt = f"""请根据以下审核规则审核剧本节拍列表，并给出审核结果。
+
+## 审核规则
+{skill_content}
+
+## 可用角色 ID
+{', '.join(valid_ids) if valid_ids else '无'}
+
+## 节拍数据
+{beats_json}
+
+请返回一个 JSON 对象：
+{{ "pass": true/false, "issues": ["问题描述1", "问题描述2"] }}
+如果所有节拍都符合规则，pass 为 true；否则为 false，并在 issues 中列出所有问题（每个问题需指出具体 beat 序号和违规项）。
+如果遇到英文情绪，请直接按映射表自动修正，并在 issues 中注明已修正，同时 pass 仍为 true（除非有其他问题）。
+"""
+    try:
+        result = structured_completion(
+            system_prompt="你是一个严格的剧本审核员。请只输出 JSON。",
+            user_prompt=review_prompt,
+            model=model
+        )
+        return {"pass": result.get("pass", False), "issues": result.get("issues", [])}
+    except Exception as e:
+        print(f"  ❌ 审核 Skill 执行失败: {e}")
+        return {"pass": False, "issues": [f"审核异常: {str(e)}"]}
+
+def beat_generator_agent(scene: Scene, assets: AssetBox, model: str = "deepseek-chat") -> Scene:
+    """使用 Agent + Skill 生成节拍，带审核与自动回改，支持临时角色"""
     if not scene.source_text:
         scene.beats = []
         return scene
 
-    # 读取外部参考标准
-    try:
-        with open("references/01-beat-writing-standard.md", "r", encoding="utf-8") as f:
-            beat_standard = f.read()
-    except FileNotFoundError:
-        beat_standard = ""  # 降级为空
+    # 加载 Agent 定义、写作标准、审核 Skill
+    agent_prompt = load_markdown("agents/beat-generator.md")
+    beat_standard = load_markdown("references/01-beat-writing-standard.md")
+    review_skill = load_markdown("skills/review-beats.md")
 
+    # 构建角色列表（包含临时角色）
     char_list = "\n".join([f"{c.id}: {c.name}" for c in assets.characters])
-
     temp_char_pattern = re.compile(r'临时角色[：:]\s*(TEMP\d+)[-]\s*([^，,\n]+)')
     temp_chars = []
     for match in temp_char_pattern.finditer(scene.summary):
@@ -263,46 +310,46 @@ def generate_beats_for_scene(scene: Scene, assets: AssetBox, model: str = "deeps
     if temp_chars:
         char_list += "\n临时角色（本场景可用）：\n" + "\n".join(temp_chars)
 
-    system = f"""你是一位剧作家...
-【原子性铁律】
-- 一个 beat 只能包含**一个主体**的**一个动作**或**一句对白**。
-- 绝对禁止将多个角色的动作或对话混合在一个 beat 中。
-- 环境描写、视觉描述应作为独立的 action beat，character_ref 设为 "GROUP"。
-- 如果原文中一个人物在说话时同时做了动作，可以拆分为一个 dialogue beat 和一个紧随的 action beat。
-"""
-    class BeatList(BaseModel):
-        beats: List[Beat] = []
+    # 准备系统提示词（注入标准）
+    system = agent_prompt.format(
+        scene_summary=scene.summary,
+        scene_intention=scene.intention,
+        scene_source_text=scene.source_text,
+        character_list=char_list,
+        beat_writing_standard=beat_standard
+    )
+    system += "\n\n所有输出必须使用中文。请输出仅包含 beats 数组的 JSON 对象。"
 
-    schema_desc = json.dumps(BeatList.model_json_schema(),indent=2)
-    system_with_schema = system + "\n输出必须符合以下 JSON Schema:\n" + schema_desc
+    # 初始用户提示
     user = f"场景概要：{scene.summary}\n场景意图：{scene.intention}\n角色列表：{char_list}\n场景原文：\n{scene.source_text}"
 
     max_retries = 2
     for retry in range(max_retries + 1):
         try:
-            result = structured_completion(system_with_schema, user, model)
+            result = structured_completion(system, user, model)
+            beats_data = result.get("beats", [])
             beats = []
-            for b in result["beats"]:
-                bt = Beat(**b)
-                if bt.type == "dialogue" and (not bt.line or bt.line.strip() == ""):
+            for b in beats_data:
+                # 基本过滤
+                if b.get("type") == "dialogue" and not b.get("line", "").strip():
                     continue
-                if bt.type == "action" and (not bt.description or bt.description.strip() == ""):
+                if b.get("type") == "action" and not b.get("description", "").strip():
                     continue
-                beats.append(bt)
+                beats.append(Beat(**b))
             scene.beats = beats
 
-            # 审核
-            review = review_beats(scene, assets)
-            if review["pass"]:
-                break  # 通过，结束重试
+            # 使用 Skill 审核
+            review_result = apply_review_skill(scene, assets, review_skill, model)
+            if review_result["pass"]:
+                break
             else:
                 if retry < max_retries:
-                    print(f"  🔄 场景 {scene.scene_id} 审核未通过，重试 {retry+1}/{max_retries}")
-                    # 把问题注入 user prompt 帮助修正
-                    user += f"\n\n【上一版问题】\n" + "\n".join(review["issues"]) + "\n请修正后重新输出。"
+                    print(f"  🔄 场景 {scene.scene_id} 审核未通过，根据 Skill 修正指引重试 {retry+1}/{max_retries}")
+                    user += f"\n\n【上一版问题与修正指引】\n" + "\n".join(review_result["issues"])
+                    user += "\n请严格按修正指引重写节拍，确保通过审核。"
                 else:
                     print(f"  ⚠️ 场景 {scene.scene_id} 审核未通过，已达最大重试次数，保留当前版本")
-                    for issue in review["issues"]:
+                    for issue in review_result["issues"]:
                         print(f"     - {issue}")
 
         except Exception as e:
@@ -310,91 +357,6 @@ def generate_beats_for_scene(scene: Scene, assets: AssetBox, model: str = "deeps
             scene.beats = []
             break
     return scene
-
-def review_beats(scene: Scene, assets: AssetBox) -> dict:
-    """
-    审核单个场景的节拍质量，返回 {"pass": bool, "issues": [str]}
-    - 自动修正可识别的英文情绪并记录日志
-    - 允许通过，但会将修正信息作为 issues 提示
-    """
-    issues = []
-    valid_ids = {c.id for c in assets.characters}
-    allowed_emotions = {
-        "高兴", "愤怒", "悲伤", "惊讶", "恐惧", "厌恶", "紧张", "兴奋",
-        "好奇", "冷漠", "得意", "不屑", "无奈", "坚定", "犹豫", "感动", "尴尬"
-    }
-    # 英文→中文情绪映射表
-    emotion_map = {
-        "shock": "震惊", "awe": "敬畏", "disbelief": "难以置信", "urgent": "急迫",
-        "angry": "愤怒", "sad": "悲伤", "surprised": "惊讶", "fear": "恐惧",
-        "disgusted": "厌恶", "nervous": "紧张", "excited": "兴奋", "curious": "好奇",
-        "indifferent": "冷漠", "proud": "得意", "disdainful": "不屑", "helpless": "无奈",
-        "firm": "坚定", "hesitant": "犹豫", "touched": "感动", "embarrassed": "尴尬",
-        "confident": "自信", "calm": "冷静", "anxious": "焦虑", "confused": "困惑",
-    }
-
-    # 检测群体角色名称的关键词
-    group_name_keywords = ["众人", "所有人", "宇航员们", "科学家们", "大家", "一群人", "队员们"]
-
-    for i, beat in enumerate(scene.beats):
-        # ===== 1. 角色引用检查 =====
-        if beat.character_ref and beat.character_ref != "GROUP":
-            if not beat.character_ref.startswith("TEMP_") and beat.character_ref not in valid_ids:
-                issues.append(f"Beat {i}: character_ref '{beat.character_ref}' 不在资产库中且非临时角色ID")
-            else:
-                # 检查角色是否为不应存在的群体角色
-                char = next((c for c in assets.characters if c.id == beat.character_ref), None)
-                if char and any(kw in char.name for kw in group_name_keywords):
-                    issues.append(f"Beat {i}: 角色 '{char.name}' 是群体角色，应拆分为个体")
-
-        if beat.to and beat.to not in valid_ids and not beat.to.startswith("TEMP_"):
-            issues.append(f"Beat {i}: 对话对象 '{beat.to}' 不在资产库中且非临时角色ID")
-
-        # ===== 2. 字段完整性检查 =====
-        if beat.type == "dialogue":
-            if not beat.line or beat.line.strip() == "":
-                issues.append(f"Beat {i}: 对话缺少 line")
-        elif beat.type == "action":
-            if not beat.description or beat.description.strip() == "":
-                issues.append(f"Beat {i}: 动作缺少 description")
-
-        # ===== 3. 情绪检查与自动修正 =====
-        if beat.emotion:
-            # 如果是英文且可映射，自动修正并记录（不阻止通过）
-            if beat.emotion in emotion_map:
-                old_emotion = beat.emotion
-                beat.emotion = emotion_map[beat.emotion]
-                issues.append(f"Beat {i}: 情绪 '{old_emotion}' 已自动修正为 '{beat.emotion}'")
-            elif beat.emotion not in allowed_emotions:
-                issues.append(f"Beat {i}: 情绪 '{beat.emotion}' 不在标准词表中")
-
-        # ===== 4. Beat 原子性检查 =====
-        # 安全获取 description，避免 None 引发错误
-        desc = beat.description or ""
-        line = beat.line or ""
-
-        # 动作节拍中包含了对话文本（带引号或冒号引导的说话）
-        if beat.type == "action" and desc:
-            if "“" in desc or "”" in desc or "：" in desc:
-                issues.append(f"Beat {i}: 动作节拍中包含了对话文本，应拆分为 dialogue beat")
-            if "一边" in desc and desc.count("一边") >= 2:
-                issues.append(f"Beat {i}: 动作节拍包含多个并行动作，可能需拆分")
-            # 检查是否包含两个及以上已知角色ID（说明多个主体被合并）
-            found_chars = [cid for cid in valid_ids if cid in desc]
-            if len(found_chars) >= 2:
-                issues.append(f"Beat {i}: 动作节拍包含多个角色主体 ({found_chars})，应拆分")
-
-        # 对话节拍中包含了明显的动作描述（如“说”字以外的动词，可选的额外检查）
-        # 此处暂不强制，但可记录
-        if beat.type == "dialogue" and line:
-            # 如果 line 以动作描述开头且包含“说”以外的动词，可能有问题
-            pass
-
-        # ===== 5. 调试日志（合并到主循环） =====
-        print(f"    [审核] Beat {i}: type={beat.type}, character={beat.character_ref}, emotion='{beat.emotion}'")
-
-    return {"pass": len(issues) == 0, "issues": issues}
-
 
 
 def novel_to_script(novel_file: str, model: str = "deepseek-chat") -> Script:
