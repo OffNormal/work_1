@@ -270,24 +270,19 @@ def segment_scenes_with_text(novel_text: str, assets: AssetBox, model: str = "de
             if not any(c.id == temp_id for c in assets.characters):
                 assets.characters.append(Character(id=temp_id, name=temp_name, type="supporting", description="临时群演"))
     
-    # 地点一致性硬校验：检查每个场景的 source_text 是否包含多个地点
+    # 地点一致性硬校验：如果 source_text 中出现其他地点名称，强制报警
     for scene in scenes:
         if not scene.source_text or not scene.location_ref:
             continue
-        # 获取当前场景的合法地点名称（从 assets 中查找）
-        current_loc_name = ""
-        for loc in assets.locations:
-            if loc.id == scene.location_ref:
-                current_loc_name = loc.name
-                break
-        # 其他地点名称列表
-        other_loc_names = [loc.name for loc in assets.locations if loc.id != scene.location_ref]
-        # 检查 source_text 中是否出现其他地点名称
-        found_other = [name for name in other_loc_names if name in scene.source_text]
-        if found_other:
-            print(f"  ⚠️ 场景 {scene.scene_id} 包含其他地点名称: {found_other}，可能违反单一地点原则")
-            # 简单处理：标记 issue 以便人工检查（因为自动拆分较复杂，可先报警）
-            # 如需自动处理，可尝试按段落拆分，但此处仅警告
+        current_loc = next((loc for loc in assets.locations if loc.id == scene.location_ref), None)
+        if not current_loc:
+            continue
+        other_names = [loc.name for loc in assets.locations if loc.id != scene.location_ref]
+        found_others = [name for name in other_names if name and name in scene.source_text]
+        if found_others:
+            print(f"  ⚠️ 场景 {scene.scene_id} ({current_loc.name}) 的 source_text 包含其他地点: {found_others}")
+            # 简单拆分策略：将 source_text 中首次出现其他地点的位置作为切割点
+            # （注：精确拆分需复杂 NLP，此处仅警告，由审核 Skill 兜底）
 
     return scenes
 
@@ -362,13 +357,21 @@ def beat_generator_agent(scene: Scene, assets: AssetBox, model: str = "deepseek-
     if temp_chars:
         char_list += "\n临时角色（本场景可用）：\n" + "\n".join(temp_chars)
 
+    # 获取当前场景的地点名称
+    scene_location = scene.slug  # 默认使用 slug 作为地点描述
+    for loc in assets.locations:
+        if loc.id == scene.location_ref:
+            scene_location = f"{loc.name}（{loc.type}）"
+            break
+
     # 准备系统提示词（注入标准）
     system = agent_prompt.format(
         scene_summary=scene.summary,
         scene_intention=scene.intention,
         scene_source_text=scene.source_text,
         character_list=char_list,
-        beat_writing_standard=beat_standard
+        beat_writing_standard=beat_standard,
+        scene_location=scene_location  # 新增：当前场景地点
     )
     system += "\n\n所有输出必须使用中文。请输出仅包含 beats 数组的 JSON 对象。"
 
