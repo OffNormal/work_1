@@ -1,0 +1,811 @@
+title: num_01
+author: AI 辅助改编
+assets:
+  characters:
+    - id: CHAR_001
+      name: 叶凡
+      aliases: []
+      type: protagonist
+      description: 喜欢看搜奇类书籍，泡绿茶。大学毕业后留城市工作，性格温和，有些淡然。
+      traits:
+        - 喜欢阅读古籍
+        - 淡然
+        - 偶尔调侃
+      voice_tone: 平静，偶尔调侃
+    - id: CHAR_002
+      name: 林佳
+      aliases:
+        - 林大美女
+      type: supporting
+      description: 叶凡的大学同学，漂亮精明，现实，交际能力强，已升任部门经理。
+      traits:
+        - 精明
+        - 漂亮
+        - 现实
+        - 交际能力强
+      voice_tone: 妩媚动人，调侃
+    - id: CHAR_003
+      name: 刘云志
+      aliases: []
+      type: supporting
+      description: 叶凡的大学同学，开了一家小公司，有一定背景，对叶凡有轻视态度。
+      traits:
+        - 有些成就
+        - 轻视他人
+      voice_tone: 平淡，略带不屑
+    - id: CHAR_004
+      name: 国际空间站宇航员
+      aliases: []
+      type: supporting
+      description: 将龙尸和青铜巨棺的信息传送回地面的几名宇航员。
+      traits: []
+      voice_tone: ''
+  locations:
+    - id: LOC_001
+      name: 叶凡的房间
+      type: INT
+      description: 有窗，窗户外有梧桐树和草坪，清风拂动。
+    - id: LOC_002
+      name: 百盛商场前路边
+      type: EXT
+      description: 城市街道，有停车位，夕阳余晖，车辆川流不息。
+    - id: LOC_003
+      name: 国际空间站
+      type: EXT
+      description: 在漆黑的宇宙中，宇航员所在的空间站。
+  props:
+    - 《黄帝内经》
+    - 绿茶
+    - 手机
+    - 丰田车
+    - 青铜巨棺
+scenes:
+  - scene_id: S01
+    slug: INT. 叶凡的房间 - 黄昏
+    location_ref: LOC_001
+    time_of_day: 黄昏
+    summary: 叶凡在房间内阅读《黄帝内经》，对上古时代悠然神往，思考书中关于长生不老的记载。夕阳西下，他放下书准备参加同学聚会。
+    intention: 引入故事世界观，通过叶凡对上古隐秘的思索，为后续展开的宏大背景埋下伏笔，同时展现主角的性格与兴趣。
+    beats:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 神往
+        description: 叶凡合上《黄帝内经》，心中对素问篇所载的上古时代悠然神往。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 清风拂动，院中几株梧桐轻轻摇曳，清新的空气自窗外迎面吹来。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 好奇、怀疑
+        description: 叶凡泡上一杯绿茶，继续翻看《黄帝内经》，心中思索：上古之人春秋皆度百岁而动作不衰，这或许只是传说，但为何许多古籍都隐晦提到一段消失的上古文明？
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 怀疑
+        description: 叶凡读到素问篇中关于提挈天地、把握阴阳、长生不朽的描述，作为现代人，他完全不相信。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion:
+        description: 红日西坠，晚霞染红梧桐。叶凡放下手中的《黄帝内经》，准备去参加同学聚会。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 怀念
+        description: 离开大学三年，叶凡回想简单而纯净的学生时代，不禁有些感慨。手机铃声忽然响起。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 调侃
+        description:
+        line: 怎么，想我了？
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_001
+        emotion: 轻松
+        description: 叶凡轻松反击，两人说笑起来。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 自然
+        description:
+        line: 我不太清楚聚会的地点，一会儿同去。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_001
+        emotion:
+        description: 叶凡与林佳约好在百盛商场前见面，驱车前往。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 感慨
+        description: 叶凡想起大学时追求林佳，却被委婉告知两人不适合。林佳是一个精明而理智的女子，他知道她需要什么。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion:
+        description: 叶凡在百盛商场前找到停车位，下车来到路边等候林佳。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 七八分钟后，一辆丰田车停在路边，林佳打开车门走了过来。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 调侃
+        description:
+        line: 还有专车接送啊。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 微笑
+        description:
+        line: 少挖苦我，我可没有专车司机，那是咱班同学刘云志。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_001
+        emotion: 欣赏
+        description: 叶凡看着林佳，她穿着紧身牛仔裤和紫色T恤，秀发齐肩，丹凤眼妩媚动人，一如往昔靓丽。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 轻松、调侃
+        description:
+        line: 两年多未见，还好吗？林佳你这样天生丽质不去演艺圈发展实在对不起自己。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 妩媚、娇嗔
+        description:
+        line: 欠打吧？
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_003
+        emotion:
+        description: 停在路边的丰田车窗降下，驾驶座上的刘云志露出熟悉的面孔。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 平淡
+        description:
+        line: 好久未见。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 平淡
+        description:
+        line: 是啊。有时间我们出来聚聚。
+        parenthetical:
+        subtext:
+        to: CHAR_003
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 轻视
+        description:
+        line: 打车过来的？
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_001
+        emotion: 平淡
+        description: 叶凡听出刘云志的轻视，懒得计较，随意应了一声。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 圆滑
+        description:
+        line: 这一次匆匆忙忙赶来，给留在这座城市的几位老同学都打了电话，我们坐刘云志的车一起走吧。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 假意抱歉、冷淡
+        description:
+        line: 真是不好意思，已经提前约好另外两个老同学，就在前面的路口，座位好像不够啊。
+        parenthetical:
+        subtext:
+        to: CHAR_001,CHAR_002
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 平静
+        description:
+        line: 没关系，你先走，我随后就到。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: action
+        character_ref: CHAR_003
+        emotion: 催促
+        description: 刘云志催促林佳上车，说怕被人以口水淹死。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_002
+        emotion: 歉意、犹豫
+        description: 林佳略作犹豫，对叶凡表达了一番歉意，在刘云志的催促下坐上了丰田车。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 不悦
+        description: 车窗升起的刹那，叶凡隐约听到刘云志不屑的低语：“现在正是下班高峰时间段，能等到出租车才怪！”
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 释然
+        description: 对于刘云志，叶凡直接忽略。林佳的犹豫和选择让他有些意外，但也明白现实中的功利与自尊无可厚非。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 红日已经降落地平线下，天际暗淡，整座城市像是披上了一层灰蒙蒙的厚衣，夜幕即将落下。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_004
+        emotion: 震惊
+        description: 此时此刻，漆黑冰冷的宇宙中，九具庞大的龙尸拉着一口青铜巨棺，震撼定格。国际空间站内的宇航员已将这一震世信息传送回地面，等待指示。
+        line:
+        parenthetical:
+        subtext:
+        to:
+  - scene_id: S02
+    slug: EXT. 百盛商场前路边 - 日/夜
+    location_ref: LOC_002
+    time_of_day: 黄昏
+    summary: 叶凡驱车至百盛商场前等候林佳。林佳乘刘云志的车到来，三人对话寒暄。刘云志流露轻视，最终林佳随刘云志离开，叶凡独自留下。
+    intention: 通过同学聚会的等候场景，刻画叶凡的处境与性格，展现他与林佳、刘云志之间微妙的关系，为后续人物互动做铺垫。
+    beats:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 平静
+        description: 手机铃声响起，叶凡接听。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 调侃
+        description:
+        line: 想我了没？
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 反击
+        description:
+        line: 怎么，想我了？
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 愉快
+        description:
+        line: 我不太清楚聚会的地点，一会儿同去。
+        parenthetical: 轻笑
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 自然
+        description:
+        line: 好，那在百盛商场前见。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: action
+        character_ref: CHAR_001
+        emotion: 平常
+        description: 叶凡驱车至百盛商场，停车后走到路边等候。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_002
+        emotion:
+        description: 一辆丰田车驶来停下，林佳下车。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 微笑
+        description: 叶凡迎上前去。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 调侃
+        description:
+        line: 还有专车接送啊。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 轻松
+        description:
+        line: 少挖苦我，我可没有专车司机，那是咱班同学刘云志。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_003
+        emotion:
+        description: 丰田车窗降下，刘云志露出面孔。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 淡淡
+        description:
+        line: 好久未见。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 平淡
+        description:
+        line: 是啊。有时间我们出来聚聚。
+        parenthetical:
+        subtext:
+        to: CHAR_003
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 轻视
+        description:
+        line: 打车过来的？
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 不在意
+        description:
+        line: 嗯。
+        parenthetical:
+        subtext:
+        to: CHAR_003
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 打圆场
+        description:
+        line: 这一次匆匆忙忙赶来，给留在这座城市的几位老同学都打了电话，我们坐刘云志的车一起走吧。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 略带歉意
+        description:
+        line: 真是不好意思，已经提前约好另外两个老同学，就在前面的路口，座位好像不够啊。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 平静
+        description:
+        line: 没关系，你先走，我随后就到。
+        parenthetical:
+        subtext:
+        to: CHAR_003
+      - type: action
+        character_ref: CHAR_001
+        emotion: 微笑
+        description: 叶凡转向林佳。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 邀请
+        description:
+        line: 和我一起走，还是……
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: action
+        character_ref: CHAR_002
+        emotion: 犹豫
+        description: 林佳犹豫。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 催促
+        description:
+        line: 林大美女还是坐我的车先走吧，不然我怕会被人以口水淹死。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 歉意
+        description:
+        line: 叶凡，不好意思，那我就先坐车过去了。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_002
+        emotion:
+        description: 林佳坐上丰田车。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 不屑
+        description:
+        line: 现在正是下班高峰时间段，能等到出租车才怪！
+        parenthetical: 低声
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_003
+        emotion:
+        description: 丰田车绝尘而去。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 复杂
+        description: 叶凡站在原地，目送车子远去。夜幕渐渐降临，城市华灯初上。
+        line:
+        parenthetical:
+        subtext:
+        to:
+  - scene_id: S03
+    slug: EXT. 国际空间站 - 夜
+    location_ref: LOC_003
+    time_of_day: 夜
+    summary: 九具龙尸拉着一口青铜古棺横亘在宇宙中，国际空间站的宇航员将这震撼一幕拍摄并传回地面，等待进一步指示。
+    intention: 切入故事的核心悬念，将现实与神秘事件连接，制造强烈的戏剧张力，开启主线剧情。
+    beats:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 神往
+        description: 叶凡合上《黄帝内经》，悠然神往。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 好奇
+        description: 叶凡继续翻看手中的古籍，对上古时代充满好奇。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 沉思
+        description: 叶凡暂且放下疑惑，沉浸于书中。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 平静
+        description: 叶凡放下《黄帝内经》，看了一眼窗外的晚霞，起身准备出门。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 被打断
+        description: 手机铃声响起，叶凡接听。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 轻松
+        description: 叶凡听到电话那头林佳的调侃，嘴角扬起。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 调侃
+        description:
+        line: 怎么，想我了？
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 愉快
+        description:
+        line: 我不太清楚聚会的地点，一会儿同去。
+        parenthetical: （笑声）
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_001
+        emotion: 平静
+        description: 叶凡挂断电话，驱车前往百盛商场。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 等待
+        description: 叶凡在百盛商场前停好车，站在路边等候，城市沐浴在夕阳余晖中。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 友好
+        description: 一辆丰田车停在路边，叶凡看到林佳下车，迎上前去。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 调侃
+        description:
+        line: 还有专车接送啊。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 轻笑
+        description:
+        line: 少挖苦我，我可没有专车司机，那是咱班同学刘云志。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 关心
+        description:
+        line: 两年多未见，还好吗？
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 微笑
+        description:
+        line: 还好。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 调侃
+        description:
+        line: 林佳你这样天生丽质不去演艺圈发展实在对不起自己。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 妩媚，假装生气
+        description:
+        line: 欠打吧？
+        parenthetical: （斜瞟，笑）
+        subtext:
+        to: CHAR_001
+      - type: action
+        character_ref: CHAR_003
+        emotion: 冷淡
+        description: 丰田车的车窗降下，刘云志坐在驾驶位，向叶凡淡淡笑了笑。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 平淡
+        description:
+        line: 好久未见。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 平淡
+        description:
+        line: 是啊。有时间我们出来聚聚。
+        parenthetical:
+        subtext:
+        to: CHAR_003
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 略带轻视
+        description:
+        line: 打车过来的？
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 敷衍
+        description:
+        line: 嗯。
+        parenthetical:
+        subtext:
+        to: CHAR_003
+      - type: dialogue
+        character_ref: CHAR_002
+        emotion: 圆场
+        description:
+        line: 这一次匆匆忙忙赶来，给留在这座城市的几位老同学都打了电话，我们坐刘云志的车一起走吧。
+        parenthetical:
+        subtext:
+        to: CHAR_001
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 假装歉意
+        description:
+        line: 真是不好意思，已经提前约好另外两个老同学，就在前面的路口，座位好像不够啊。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 不在意
+        description:
+        line: 没关系，你先走，我随后就到。
+        parenthetical:
+        subtext:
+        to: CHAR_003
+      - type: dialogue
+        character_ref: CHAR_001
+        emotion: 询问
+        description:
+        line: 和我一起走，还是……
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 催促，略带玩笑
+        description:
+        line: 林大美女还是坐我的车先走吧，不然我怕会被人以口水淹死。
+        parenthetical:
+        subtext:
+        to: CHAR_002
+      - type: action
+        character_ref: CHAR_002
+        emotion: 为难
+        description: 林佳略作犹豫，对叶凡表达歉意，然后在刘云志的催促下坐上丰田车。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_003
+        emotion: 不屑
+        description:
+        line: 现在正是下班高峰时间段，能等到出租车才怪！
+        parenthetical: （低语，不屑）
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_001
+        emotion: 淡然
+        description: 叶凡望着远去的车，淡淡地摇了摇头，并不在意。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: 震撼
+        description: 红日已沉，夜幕降临，城市灰蒙蒙一片。然而，在漆黑与冰冷的宇宙中，九具庞大的龙尸拉着一口青铜巨棺，横亘星空，仿佛永恒定格。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_004
+        emotion: 震惊、紧张
+        description: 国际空间站内，几名宇航员震惊地望着这一幕，已将影像传送回地面，等待指示。
+        line:
+        parenthetical:
+        subtext:
+        to:

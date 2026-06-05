@@ -11,7 +11,6 @@
 3. `02-episode-architecture.md` — 分集与情绪曲线系统（含系统化分集框架）
 4. `03-script-writing-standard.md` — 单集写作标准（含类型模板、格式标记）
 5. `04-review-gates.md` — 业务审核与一致性门控（含 Aligner 方法论）
-6. `18-theme-selection-philosophy.md` — 题材选择哲学（开天眼方法论、众生好恶、颠倒真相）
 
 ### 分镜与视频化（B 级 - 按需）
 7. `06-storyboard-handoff.md` — 剧本到分镜/动态提示词桥接（含两种工作流）
@@ -20,12 +19,8 @@
 10a. `10a-action-dialogue-scenes.md` — 动作与对话场景设计
 10b. `10b-atmosphere-fantasy.md` — 氛围营造与奇幻视觉设计
 10c. `10c-suspense-montage.md` — 悬疑惊悚与蒙太奇设计
-11a. `11a-seedance-prompt-methodology.md` — Seedance 2.0 提示词方法论
-11b. `11b-image-motion-prompt.md` — 图像与动态提示词方法论
-11c. `11c-sora2-rhythm-control.md` — Sora2 方法论与节奏控制
 12. `12-genre-specific-techniques.md` — 类型化技巧（玄幻、末世、网文、短剧）
 13. `19-micro-drama-storyboard-system.md` — 微短剧分镜两阶段系统（视觉词典 + 视听单元生成）
-14. `20-frame-description-elements.md` — 帧图描述完整元素表（26 项元素清单，整合 08/11b/15/17/19）
 
 ### 视觉叙事与心理学（D 级 - 进阶）
 14. `13-show-dont-tell-methodology.md` — Show Don't Tell 方法论（情绪翻译、动作化、画面语言）
@@ -69,7 +64,6 @@
 - 分集规划：00, 02, 18
 - 剧本写作：00, 03, 12, 18
 - 业务审核：04, 18
-- 合规审核：05
 
 ### 剧本 → 分镜流程（标准分镜流）
 - 分镜桥接：06

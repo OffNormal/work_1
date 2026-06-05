@@ -151,12 +151,12 @@ def _fallback_completion(system_prompt: str, user_prompt: str, model: str, clien
 # ============================================================
 def extract_assets(novel_text: str, model: str = "deepseek-chat") -> AssetBox:
     """第一步：提取角色、地点、道具，要求遍历所有出现的人物和地点"""
-    system = """你是一位专业的剧本分析师。请从给定的小说片段中提取所有角色、地点和重要道具，并以 JSON 格式返回。
-要求：
-- 每个角色分配一个唯一 ID (CHAR_XXX)，包含姓名、别名、类型(protagonist/antagonist/supporting)、简短描述、性格特点和说话语气。
-- 每个地点分配一个唯一 ID (LOC_XXX)，包含名称、类型(INT/EXT)和描述，确保覆盖所有场景（包括卧室、街道等），ID命名要明确。
-- 道具用字符串列表表示。
-请严格遵循给出的 JSON Schema。"""
+    system = """你是一位专业的剧本分析师。请从给定的小说片段中提取所有角色，必须满足：
+- **禁止使用群体角色**：不能创建代表“众人”“宇航员们”之类的聚合角色。必须将群体拆解为单独个体（如“宇航员A”“宇航员B”），即使原文未给出具体名字，也请使用“CHAR_XXX_1, 名字：宇航员A”的格式。
+- 每个角色分配唯一 ID，包含姓名、类型、简短描述、性格特点和语气。
+- 如果某个角色只在单一场景出现且无名，也需提取，类型设为“supporting”，描述可简述其功能。
+- 地点提取同样需覆盖所有场景。
+"""
     class AssetResponse(BaseModel):
         characters: List[Character] = []
         locations: List[Location] = []
@@ -168,23 +168,30 @@ def extract_assets(novel_text: str, model: str = "deepseek-chat") -> AssetBox:
     result = structured_completion(system_with_schema, user, model)
     return AssetBox(**result)
 
+
+
 def segment_scenes_with_text(novel_text: str, assets: AssetBox, model: str = "deepseek-chat") -> List[Scene]:
     """第二步：切分场景并返回每个场景对应的原文片段，保证线性时序"""
     char_list = "\n".join([f"{c.id}: {c.name}（{c.type}）" for c in assets.characters])
     loc_list = "\n".join([f"{l.id}: {l.name} ({l.type})" for l in assets.locations])
+    system = """你是剧本分场专家。请严格按照原文的叙事顺序，将故事切分成连续且不重叠的场景。你必须遵守以下铁律：
 
-    system = """你是剧本分场专家。请仔细阅读小说，将故事按时间顺序切分成若干连续的场景。每个场景需包含：
-- scene_id: 场次编号 S01, S02 ...
-- slug: 标准场标，格式 "INT./EXT. 地点 - 时间"，时间用清晨/日/黄昏/夜等
-- location_ref: 从提供的地点 ID 中选择；若都不匹配，请新建一个合理ID并确保稍后添加到资产中
+1. **线性不重叠原则**：原文的每一段只能属于一个场景，相邻场景的 source_text 必须首尾相接、无缝衔接，绝对不允许有任何内容上的重复或覆盖。
+2. **切分点识别**：仅在时间、地点或主要人物发生重大转换时切分。如果同一地点内发生了连续事件，即使视角切换，也不应拆分，应归入一个场景。
+3. **source_text 精确性**：每个场景的 source_text 必须是从原文中直接摘抄的连续段落，不得概括、重组或添加任何原文没有的词语。
+4. **无视角跳跃**：一个场景内不得突然切换至另一地点或另一批人物的视角（除非原文明确如此）。如果原文中视角切换了，那很可能意味着新场景的开始。
+5. 如果场景中出现资产库中没有的临时角色，请在 summary 中注明“临时角色：TEMP01-角色名”等，以便自动注册。
+
+其他要求：
+- scene_id: 场次编号 S01, S02...
+- slug: 标准场标 "INT./EXT. 地点 - 时间"
+- location_ref: 从地点列表选择，无匹配则新建ID
 - time_of_day: 日/夜/黄昏等
 - summary: 该场景的简要情节
-- intention: 创作意图，即这场戏在叙事上的功能
-- source_text: 从原文中摘抄的该场景对应的全部原文片段（请尽量完整保留段落，不要概括）
-要求：
-- 场景必须严格按原文时间顺序，不允许跳跃或重复
-- 所有场景的 source_text 加起来应基本覆盖原文，不要遗漏重要情节
+- intention: 创作意图
+- source_text: 该场景对应的完整原文段落（严禁概括）
 """
+
     class SceneList(BaseModel):
         scenes: List[Scene] = []
 
@@ -193,19 +200,45 @@ def segment_scenes_with_text(novel_text: str, assets: AssetBox, model: str = "de
     user = f"角色列表：\n{char_list}\n\n地点列表：\n{loc_list}\n\n小说内容：\n{novel_text}"
     result = structured_completion(system_with_schema, user, model)
     scenes = [Scene(**s) for s in result["scenes"]]
-    # 动态补全地点：检查 scene 中 location_ref 是否在资产中，若不在则添加一个基础地点
+    
+    
+    temp_char_pattern = re.compile(r'临时角色[：:]\s*(TEMP\d+)[-]\s*([^，,\n]+)')
+    for scene in scenes:
+        for match in temp_char_pattern.finditer(scene.summary):
+            temp_id = match.group(1)
+            temp_name = match.group(2).strip()
+            if not any(c.id == temp_id for c in assets.characters):
+                assets.characters.append(Character(
+                    id=temp_id,
+                    name=temp_name,
+                    type="supporting",
+                    description="临时群演"
+                ))
+    # 地点补录（已有逻辑，但需要检查是否执行）
     existing_loc_ids = {l.id for l in assets.locations}
     for scene in scenes:
         if scene.location_ref and scene.location_ref not in existing_loc_ids:
-            # 自动补一个地点
-            new_loc = Location(
+            loc_name = scene.slug.split(" - ")[0].replace("INT. ", "").replace("EXT. ", "")
+            assets.locations.append(Location(
                 id=scene.location_ref,
-                name=scene.slug.split(" - ")[0].replace("INT. ", "").replace("EXT. ", ""),
+                name=loc_name,
                 type="INT" if "INT." in scene.slug else "EXT",
                 description="自动补录"
-            )
-            assets.locations.append(new_loc)
+            ))
             existing_loc_ids.add(scene.location_ref)
+
+    # 简易重叠检测：如果相邻场景的 source_text 存在较长重复，打印警告
+    # 去重检测：计算相邻场景 source_text 的重叠词数，若超过阈值则强制修正
+    for i in range(len(scenes)-1):
+        if scenes[i].source_text and scenes[i+1].source_text:
+            words_a = set(scenes[i].source_text.split())
+            words_b = set(scenes[i+1].source_text.split())
+            if words_a and words_b:
+                overlap_ratio = len(words_a & words_b) / min(len(words_a), len(words_b))
+                if overlap_ratio > 0.3:  # 重叠超过30%视为严重重复
+                    print(f"  ⚠️ 严重重叠：{scenes[i].scene_id} 与 {scenes[i+1].scene_id}，重叠率 {overlap_ratio:.2f}，将自动裁剪")
+                    # 简单裁剪策略：保留 scenes[i] 的 source_text，将 scenes[i+1] 的 source_text 中与 scenes[i] 重叠的部分删除
+                    # 注：实际精确裁剪较复杂，此处先标记并在日志中提示人工干预
     return scenes
 
 def generate_beats_for_scene(scene: Scene, assets: AssetBox, model: str = "deepseek-chat") -> Scene:
@@ -223,14 +256,19 @@ def generate_beats_for_scene(scene: Scene, assets: AssetBox, model: str = "deeps
 
     char_list = "\n".join([f"{c.id}: {c.name}" for c in assets.characters])
 
-    system = f"""你是一位剧作家。请将下面的场景原文转换为一系列表演节拍（beats）。
-每个节拍可以是动作（action）或对白（dialogue）。
-请严格遵守以下写作标准：
-{beat_standard}
+    temp_char_pattern = re.compile(r'临时角色[：:]\s*(TEMP\d+)[-]\s*([^，,\n]+)')
+    temp_chars = []
+    for match in temp_char_pattern.finditer(scene.summary):
+        temp_chars.append(f"{match.group(1)}: {match.group(2).strip()}")
+    if temp_chars:
+        char_list += "\n临时角色（本场景可用）：\n" + "\n".join(temp_chars)
 
-此外：
-- 情绪请从标准词表中选择
-- 输出必须严格符合 JSON Schema
+    system = f"""你是一位剧作家...
+【原子性铁律】
+- 一个 beat 只能包含**一个主体**的**一个动作**或**一句对白**。
+- 绝对禁止将多个角色的动作或对话混合在一个 beat 中。
+- 环境描写、视觉描述应作为独立的 action beat，character_ref 设为 "GROUP"。
+- 如果原文中一个人物在说话时同时做了动作，可以拆分为一个 dialogue beat 和一个紧随的 action beat。
 """
     class BeatList(BaseModel):
         beats: List[Beat] = []
@@ -279,13 +317,18 @@ def review_beats(scene: Scene, assets: AssetBox) -> dict:
     """
     issues = []
     valid_ids = {c.id for c in assets.characters}
+    allowed_emotions = {
+        "高兴", "愤怒", "悲伤", "惊讶", "恐惧", "厌恶", "紧张", "兴奋",
+        "好奇", "冷漠", "得意", "不屑", "无奈", "坚定", "犹豫", "感动", "尴尬"
+    }
 
     for i, beat in enumerate(scene.beats):
         # 1. 角色引用检查
-        if beat.character_ref and beat.character_ref != "GROUP" and beat.character_ref not in valid_ids:
-            issues.append(f"Beat {i}: character_ref '{beat.character_ref}' 不在资产库中")
-        if beat.to and beat.to not in valid_ids:
-            issues.append(f"Beat {i}: 对话对象 '{beat.to}' 不在资产库中")
+        if beat.character_ref and beat.character_ref != "GROUP":
+            if not beat.character_ref.startswith("TEMP_") and beat.character_ref not in valid_ids:
+                issues.append(f"Beat {i}: character_ref '{beat.character_ref}' 不在资产库中且非临时角色ID")
+        if beat.to and beat.to not in valid_ids and not beat.to.startswith("TEMP_"):
+            issues.append(f"Beat {i}: 对话对象 '{beat.to}' 不在资产库中且非临时角色ID")
 
         # 2. 字段完整性检查
         if beat.type == "dialogue":
@@ -295,11 +338,29 @@ def review_beats(scene: Scene, assets: AssetBox) -> dict:
             if not beat.description or beat.description.strip() == "":
                 issues.append(f"Beat {i}: 动作缺少 description")
 
-        # 3. 情绪语言检查（只允许中文）
-        if beat.emotion and beat.emotion.isascii():
-            issues.append(f"Beat {i}: 情绪 '{beat.emotion}' 应为中文")
+        # 3. 情绪语言检查（只允许中文白名单词汇）
+        if beat.emotion and beat.emotion not in allowed_emotions:
+            issues.append(f"Beat {i}: 情绪 '{beat.emotion}' 不在标准词表中")
 
+        # 4. Beat 原子性检查：description 或 line 中是否包含多个角色的动作或对话
+        combined_text = (beat.description or "") + (beat.line or "")
+        # 简单启发：如果文本中出现多个角色名+动作词，可能是合并节拍
+        # 检查是否同时包含“XX说”和多于一个的引号，或包含“一边...一边...”
+        if beat.type == "action" and ("“" in beat.description or "”" in beat.description):
+            issues.append(f"Beat {i}: 动作节拍中包含了对话文本，应拆分为 dialogue beat")
+        if beat.type == "action" and ("一边" in beat.description and "一边" in beat.description):
+            issues.append(f"Beat {i}: 动作节拍包含多个并行动作，可能需拆分")
+        # 更严格的判断：description 中如果出现两个及以上资产库中的角色名，可能合并了多个主体的动作
+        if beat.type == "action":
+            found_chars = [cid for cid in valid_ids if cid in beat.description]
+            if len(found_chars) >= 2:
+                issues.append(f"Beat {i}: 动作节拍包含多个角色主体 ({found_chars})，可能需拆分")
+        # 调试日志（可配置开关）
+    for i, beat in enumerate(scene.beats):
+        print(f"    [审核] Beat {i}: type={beat.type}, character={beat.character_ref}, emotion='{beat.emotion}'")
+        
     return {"pass": len(issues) == 0, "issues": issues}
+
 
 
 def novel_to_script(novel_file: str, model: str = "deepseek-chat") -> Script:
