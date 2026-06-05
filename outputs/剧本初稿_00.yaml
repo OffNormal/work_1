@@ -2,155 +2,241 @@ title: num_00
 author: AI 辅助改编
 assets:
   characters:
-    - id: CHAR_NASA_CTRL
-      name: 宇航局监控室众人
+    - id: CHAR_NASA
+      name: NASA监测人员
       aliases:
-        - NASA Control Team
+        - 主监控室内众人
       type: supporting
-      description: 在美国宇航局主监控室接收到旅行者二号传送回的神秘数据信息后震惊的科学家和工作人员
+      description: 美国宇航局主监控室内的科学家和工程师，接收到旅行者二号传回的异常数据，震惊于九龙拉棺的画面。
       traits:
         - 震惊
-        - 难以置信
-        - 目瞪口呆
-      voice_tone: 震惊的呼喊
-    - id: CHAR_ISS_CREW
+        - 专业
+        - 集体反应
+      voice_tone: 集体惊呼、难以置信
+    - id: CHAR_ISS
       name: 国际空间站宇航员
       aliases:
-        - ISS Crew
+        - 几名宇航员
+        - 宇航精英
       type: supporting
-      description: 在国际空间站外发现九具龙尸和青铜巨棺的宇航精英
+      description: 在国际空间站外看到九龙拉棺的宇航员，思想受到冲击。
       traits:
         - 震惊
-        - 思维受冲击
-        - 瞳孔收缩
-      voice_tone: 难以置信的呼叫
+        - 冷静
+        - 专业
+      voice_tone: 呼叫地球，语气急促
   locations:
     - id: LOC_NASA_CTRL
       name: 美国宇航局主监控室
       type: INT
-      description: 接收到旅行者二号数据并展示不可思议画面的控制中心
+      description: 接收和处理外太空探测器数据的控制中心，墙壁布满显示屏，工作人员紧张工作。
     - id: LOC_ISS
       name: 国际空间站
       type: INT
-      description: 绕地飞行的空间站，宇航员在此观察到宇宙中的龙尸与铜棺
+      description: 绕地飞行的载人空间站，提供微重力实验环境，拥有观测窗可直视宇宙空间。
     - id: LOC_SPACE
-      name: 外太空
+      name: 宇宙深空
       type: EXT
-      description: 黑暗与冰冷并存的宇宙空间，九具龙尸与青铜巨棺漂浮之处
+      description: 黑暗、冰冷、无垠的宇宙空间，散布点点星辰，是九龙拉棺漂浮的背景区域。
   props:
-    - 旅行者二号探测器
-    - 镀金唱片
-    - 九具五爪黑龙尸
-    - 青铜巨棺
+    - 旅行者二号太空探测器
+    - 镀金唱片（向宇宙致意）
+    - 九具龙尸
     - 黑色铁索
+    - 青铜巨棺
 scenes:
   - scene_id: S01
     slug: INT. 美国宇航局主监控室 - 日
     location_ref: LOC_NASA_CTRL
     time_of_day: day
-    summary: 宇航局收到旅行者二号传回的神秘数据，破译后看到九具庞大尸体横在宇宙中的震撼画面，所有人员震惊。
-    intention: 引入核心神秘事件，制造悬念，开启故事。
+    summary: 美国宇航局主监控室接收到旅行者二号传送回的神秘数据，破译后显示九具龙尸的画面，监测人员震惊。
+    intention: 建立悬念，展示第一次发现宇宙中的异常存在，为后续九龙拉棺做铺垫。
     beats:
       - type: action
-        character_ref: CHAR_NASA_CTRL
-        emotion: 紧张的期待
-        description: 监控室科学家们紧张地进行数据破译。
+        character_ref: CHAR_NASA
+        emotion: tense anticipation
+        description: NASA main control room receives a mysterious data stream from Voyager 2. Technicians work 
+          frantically to decode it.
         line:
         parenthetical:
         subtext:
         to:
       - type: action
-        character_ref: CHAR_NASA_CTRL
-        emotion: 震惊
-        description: 破译完成，屏幕上出现九具庞大尸体横陈宇宙的画面，所有人变色，呆立当场。
-        line:
-        parenthetical:
-        subtext:
-        to:
-      - type: dialogue
-        character_ref: CHAR_NASA_CTRL
-        emotion: 难以置信
-        description:
-        line: 上帝，我看到了什么？
-        parenthetical:
-        subtext:
-        to:
-      - type: dialogue
-        character_ref: CHAR_NASA_CTRL
-        emotion: 震惊
-        description:
-        line: 这怎么可能，无法相信！
-        parenthetical:
-        subtext:
-        to:
-      - type: action
-        character_ref: CHAR_NASA_CTRL
-        emotion: 沸腾
-        description: 监控室内一片哗然，众人从震惊中回过神，议论纷纷。
+        character_ref: CHAR_NASA
+        emotion: shock
+        description: 'The decoded image gradually reveals an impossible sight: nine colossal dragon corpses floating in space.'
         line:
         parenthetical:
         subtext:
         to:
       - type: action
-        character_ref: CHAR_ISS_CREW
-        emotion: 惊愕
-        description: 国际空间站内，宇航员们突然变色，瞳孔收缩。他们看到了窗外宇宙中九具龙尸，以及尾端铁索连着的青铜棺椁。
+        character_ref: CHAR_NASA
+        emotion: stunned disbelief
+        description: All personnel in the control room freeze, their faces drained of color, unable to move.
         line:
         parenthetical:
         subtext:
         to:
       - type: dialogue
-        character_ref: CHAR_ISS_CREW
-        emotion: 极度震惊
+        character_ref: CHAR_NASA
+        emotion: utter shock
         description:
-        line: 那是……
-        parenthetical:
-        subtext: 看到九龙拉棺的震撼
+        line: God, what am I seeing?
+        parenthetical: (whispering)
+        subtext: Reality itself has shattered.
         to:
       - type: dialogue
-        character_ref: CHAR_ISS_CREW
-        emotion: 急迫
+        character_ref: CHAR_NASA
+        emotion: disbelief
         description:
-        line: 呼叫地球……
+        line: This can't be possible, I can't believe it!
         parenthetical:
-        subtext: 立即向地球报告
+        subtext: My scientific worldview is crumbling.
         to:
+      - type: action
+        character_ref: CHAR_NASA
+        emotion: chaotic excitement
+        description: The control room erupts into a frenzy of exclamations and frantic discussion.
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: lonely vastness
+        description: Voyager 2, having sent the data, continues its solitary journey into deeper, darker space.
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: fading hope
+        description: Soon after, Voyager 2 malfunctions and its signal to Earth is lost.
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_ISS
+        emotion: sudden alarm
+        description: On the International Space Station, the astronauts simultaneously freeze, their pupils contracting 
+          sharply.
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_ISS
+        emotion: awe and terror
+        description: Outside the station, nine colossal dragon corpses hang motionless in the void, as if they have been
+          there since time immemorial.
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_ISS
+        emotion: visceral shock
+        description: The dragons are over a hundred meters long, with five claws each, jet-black scales, and translucent
+          purple horns glinting faintly.
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_ISS
+        emotion: stunned realization
+        description:
+        line: That is...
+        parenthetical: (voice trailing off)
+        subtext: What comes next is even more impossible.
+        to:
+      - type: action
+        character_ref: CHAR_ISS
+        emotion: escalating horror
+        description: They notice thick black iron chains attached to the dragons' tails, leading back to a 
+          twenty-meter-long ancient bronze coffin suspended in the darkness.
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_ISS
+        emotion: urgent fear
+        description:
+        line: Calling Earth...
+        parenthetical: (into the comm, voice trembling)
+        subtext: We are not alone, and this changes everything.
+        to: Earth
   - scene_id: S02
     slug: INT. 国际空间站 - 日
     location_ref: LOC_ISS
     time_of_day: day
-    summary: 国际空间站内，宇航员透过舷窗看到站外宇宙中九龙拉棺的惊人景象，震惊之余发出呼叫。
-    intention: 从另一视角强化神秘事件，将九龙拉棺具象化呈现，加深悬念。
+    summary: 国际空间站内，宇航员通过舷窗发现太空中九具龙尸拉着一口青铜巨棺，深感震撼并立即呼叫地球。
+    intention: 将异常现象直接呈现给航天员，加深神秘感，推动剧情关键事件——九龙拉棺的发现。
     beats:
       - type: action
-        character_ref: CHAR_ISS_CREW
+        character_ref: CHAR_ISS
         emotion: shock
-        description: 国际空间站内，几名宇航员正进行例行工作，突然一人无意中瞥向舷窗，整个人僵在原地，瞳孔急骤收缩，其余人察觉到异样，纷纷围拢过来。
+        description: 宇航员们透过国际空间站舷窗，突然看到太空中异常景象，脸色骤变，瞳孔收缩。
         line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_ISS
+        emotion: shock
+        description:
+        line: 上帝，那是什么？！
         parenthetical:
         subtext:
         to:
       - type: action
-        character_ref: CHAR_ISS_CREW
+        character_ref: CHAR_ISS
         emotion: awe
-        description: 透过舷窗，冰冷黑暗的宇宙中，九具长达百米的黑色龙尸静静横陈，铁索连着一口二十米长的青铜巨棺，景象苍凉久远，摄人心魄。
+        description: 他们迅速聚集到观测窗，看到太空中正漂浮着九具庞大的龙尸，每具长达百米，鳞片闪烁乌光。
         line:
         parenthetical:
         subtext:
         to:
       - type: dialogue
-        character_ref: CHAR_ISS_CREW
+        character_ref: CHAR_ISS
         emotion: disbelief
         description:
-        line: 那是……
+        line: 龙...传说中的龙！这怎么可能？
         parenthetical:
-        subtext: 无法相信眼前所见，传说中的龙竟然真实存在
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_ISS
+        emotion: overwhelmed
+        description: 他们的目光沿着龙尸尾部的粗大铁索移动，最终定格在一口长达二十米的青铜巨棺上，古朴棺椁悬于黑暗中。
+        line:
+        parenthetical:
+        subtext:
         to:
       - type: dialogue
-        character_ref: CHAR_ISS_CREW
+        character_ref: CHAR_ISS
+        emotion: awe
+        description:
+        line: 九龙拉棺！这是要拉到哪里去？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_ISS
+        emotion: urgent
+        description: 一名宇航员从震惊中回过神，迅速冲向通讯控制台，按下紧急呼叫按钮。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_ISS
         emotion: urgent
         description:
-        line: 呼叫地球……
-        parenthetical: 颤抖着按下通讯按钮
-        subtext: 必须立刻将这一惊人发现传回地面
-        to:
+        line: 呼叫地球！呼叫地球！这里是国际空间站，我们有紧急情况报告！
+        parenthetical: 急促
+        subtext: 需要立刻让地面知晓这个不可思议的发现
+        to: CHAR_NASA
