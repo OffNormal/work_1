@@ -1,0 +1,4339 @@
+title: num_1
+author: AI 辅助改编
+assets:
+  characters:
+    - id: CHAR_LIN
+      name: 林弦
+      aliases: []
+      type: protagonist
+      description: 主角，每天重复做梦，冒充密码专家，机智冷静。
+      traits:
+        - 机智
+        - 冷静
+        - 幽默
+        - 冒险
+      voice_tone: 轻松玩笑，自信
+    - id: CHAR_BIGCAT
+      name: 大脸猫
+      aliases:
+        - 脸哥
+      type: antagonist
+      description: 劫匪头目，戴着卡通猫面具，残忍杀害手下。
+      traits:
+        - 残忍
+        - 贪婪
+        - 多疑
+        - 粗鲁
+      voice_tone: 粗暴，江湖气
+    - id: CHAR_WOMAN
+      name: 神秘女人
+      aliases: []
+      type: supporting
+      description: 戴着奥特曼面具的女性，破解密码专家，也想开林弦的保险柜。
+      traits:
+        - 专业
+        - 暴躁
+        - 果断
+      voice_tone: 不耐烦，不屑，直接
+    - id: CHAR_THUG1
+      name: 蒙面男1
+      aliases:
+        - 捣鼓配电箱的
+      type: supporting
+      description: 大脸猫的手下，负责解除警报系统，被大脸猫杀死。
+      traits: []
+      voice_tone: 简短
+    - id: CHAR_THUG2
+      name: 蒙面男2
+      aliases:
+        - 从地下通道上来的
+      type: supporting
+      description: 大脸猫的另一手下，切断主供电线路，被大脸猫杀死。
+      traits: []
+      voice_tone: 简短
+  locations:
+    - id: LOC_STREET
+      name: 银行外街道
+      type: EXT
+      description: 深夜的银行外街道，对面就是银行。
+    - id: LOC_BANK
+      name: 银行内部
+      type: INT
+      description: 被劫匪闯入的银行内部，包括通道、配电箱处、地下通道口等。
+    - id: LOC_VAULT
+      name: 银行金库
+      type: INT
+      description: 银行深处的金库，被炸药炸开的厚墙后，内有大量写有名字的保险柜。
+  props:
+    - 卡通猫面具
+    - 奥特曼面具（两个）
+    - 手枪
+    - C4炸药
+    - 引爆器
+    - 银色密码门
+    - 保险柜（多个，其中一个刻有“林弦”）
+    - 小电脑
+    - 腕表
+    - 配电箱
+    - 弹夹
+scenes:
+  - scene_id: S01
+    slug: EXT. 银行外街道 - 夜
+    location_ref: LOC_STREET
+    time_of_day: 夜
+    summary: 林弦戴着奥特曼面具被大脸猫拉入抢劫团伙，在银行门口大脸猫枪杀一名小弟，称其手脚不干净，随后两人进入银行。
+    intention: 建立故事事件，介绍大脸猫凶残多疑的性格，为主角被卷入危机做铺垫，同时展示抢劫的荒诞开端。
+    beats:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: curious
+        description:
+        line: 你是说……你每天都会做同样的一个梦？并且每次都会在00点42分准时醒来？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: excited
+        description:
+        line: 那你爽爆了啊哥们！在梦里想杀谁就杀谁！想干什么就干什么！还能体验各种作死的游戏！嘶……想想都刺激啊！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: determined
+        description: 把弹夹推进手枪，上了膛
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: menacing
+        description:
+        line: 不过，今晚你就不用在梦里找刺激了，哥带你玩点真实的！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 用手指街对面银行
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: commanding
+        description:
+        line: 我小弟把银行门撬开了，跟我走！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: obedient
+        description: 点点头，扶正脸上的奥特曼面具，起身跟上
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: curious
+        description:
+        line: 怎么称呼啊大哥？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: proud
+        description:
+        line: 道上都叫我大脸猫。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 你叫我脸哥就行。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 脸哥，我的任务是什么？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: authoritative
+        description:
+        line: 现在还不到你这密码专家出手的时候，跟着我，别乱跑。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 带着林弦跑到银行门口
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: inquiring
+        description:
+        line: 都搞定了？
+        parenthetical:
+        subtext:
+        to: CHAR_THUG1
+      - type: action
+        character_ref: CHAR_THUG1
+        emotion:
+        description: 点头
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: cold-blooded
+        description: 用手枪顶住小弟额头，开枪射杀
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 擦擦枪口，拍拍林弦肩膀
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: gleeful
+        description:
+        line: 现在少了一个人分钱，我们能多分不少钱呢！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: shocked
+        description:
+        line: 他不是你小弟吗？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: ruthless
+        description:
+        line: 他这个人手脚不干净，为了我们的安全，留不得！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 拉着林弦往银行里面走
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_THUG2
+        emotion:
+        description: 在通道岔口捣鼓配电箱
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: impatient
+        description:
+        line: 还没好吗？
+        parenthetical:
+        subtext:
+        to: CHAR_THUG2
+      - type: action
+        character_ref: CHAR_THUG2
+        emotion: relieved
+        description: 剪掉一根电线，擦汗
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_THUG2
+        emotion:
+        description:
+        line: 弄好了，警报系统解除了！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: merciless
+        description: 对着蒙面男后脑勺开枪，血溅配电箱
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: uneasy
+        description:
+        line: 不是大哥，你这样搞的我很没安全感啊！
+        parenthetical: 指指地上的尸体
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你这个小弟也手脚不干净？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: angry
+        description:
+        line: 这家伙手脚还算干净，但他勾引你大嫂！你说我能不能留他？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: sarcastic
+        description:
+        line: 你这大哥这么难当吗？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: dismissive
+        description:
+        line: 哎呀不要在意这些小细节啦！又少个人分钱你不该高兴吗？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 打开大脸猫搂来的手
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: suspicious
+        description:
+        line: 你不会一会儿也打算把我给崩了，自己独吞钱财吧？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: reassuring
+        description:
+        line: 那必须不会！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 拍着胸腹，从腰后摸出C4炸药递给林弦
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 这是什么？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: C4炸药。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 指着C4炸药的开关讲解
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: bold
+        description:
+        line: 你脸哥我为人坦荡！从不做小人之事！一会儿你要是觉得我想杀你，你就直接按下开关把你脸哥一起炸飞！这回放心了吧？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: feigned trust
+        description:
+        line: 行，靠谱！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 比了个大拇指，收下C4炸药
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 和CHAR_LIN继续向前走
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_THUG2
+        emotion: proud
+        description:
+        line: 老大，我把主供电线路切断——
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: ruthless
+        description: 朝蒙面男开枪，爆头
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 摆摆手，表示习惯
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: resigned
+        description:
+        line: 你就直接告诉我现在还剩几个人分钱吧？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: gleeful
+        description:
+        line: 就咱俩啦！嘿嘿嘿……就咱俩啦！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 推着林弦快步往里走
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: expectant
+        description:
+        line: 你看，到仓库啦！该你这密码专家出手啦！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: 'null'
+        emotion:
+        description: 他们站在一道银色密码门前
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 密码多少？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: annoyed
+        description:
+        line: 呸！我要知道密码还找你这密码专家作甚！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: urgent
+        description:
+        line: 别闹了老弟，抓紧吧！留给我们的时间不多了！主电力一旦恢复，安保系统就会自动报警！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: calm
+        description:
+        line: 我知道你很急，但你先别急。
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 走到密码门前假装捣鼓
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 来回踱步，表情焦虑
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 你大概需要多久？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: nonchalant
+        description:
+        line: 10。
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: shocked
+        description:
+        line: 10分钟！？这也太久了吧！！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: counting down calmly
+        description:
+        line: 9……8……7……
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: shocked
+        description: 一脸震惊看着林弦飞奔出去
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: terrified
+        description: 扭头看到密码门上的C4炸药和引爆器倒计时
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: panic
+        description:
+        line: Shift！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 向墙外猛扑躲避
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: 'null'
+        emotion: chaotic
+        description: 爆炸震天，砖块铁块飞溅
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: furious
+        description:
+        line: 我特么……你不是密码专家吗？你就这样破解密码的！？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 捂着耳朵走过来，指着坍塌的墙面
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: smug
+        description:
+        line: 你就说效率不效率吧。
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 骂骂咧咧地爬起来
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: grumbling
+        description:
+        line: 专家就特么没一个靠谱的……
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 走进炸开的洞口，进入仓库
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: surprised
+        description: 环顾空荡荡的仓库，感到诧异
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: disappointed
+        description:
+        line: 怎么一分钱都没有？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 看向墙壁上整齐排列的保险柜
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 走近查看保险柜
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 看到保险柜上写着人名
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 目光扫过保险柜上的名字
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: shocked
+        description: 后退一步，盯着写有自己名字的保险柜
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 身后传来枪上膛声，枪口顶住林弦后脑勺
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 举起双手
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: nervous
+        description:
+        line: 脸哥，手下留情。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 脸哥，你可得讲道理，我一没手脚不干净、二没勾引大嫂，你肃清家门也不能冤枉到我头上吧？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: honest
+        description:
+        line: 好吧脸哥，我承认，我确实骗了你。其实我压根不是什么密码专家……我就是在广场溜达，随便捡了个奥特曼面具戴上，结果你直接蹦出来、二话不说拉着我上车了！
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 但我也不知道这奥特曼面具是你们的接头暗号啊！有一说一，我只是出于好玩骗了你，我可没害你。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 再说啦……你今天要是带那个真的密码专家来，保不准等天亮了都破解不了密码！遇上我是你歪打正着的福气啊！
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: amused
+        description: 身后传来女人的轻笑声
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: mocking
+        description:
+        line: 我可没那么笨！要是到天亮都破解不了密码门……还算什么密码专家？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 枪口离开林弦头皮
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: surprised
+        description: 回头看到一名戴奥特曼面具的苗条女性
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 我脸哥呢？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 用下巴指向脚边大脸猫的尸体
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: surprised
+        description:
+        line: 你杀了他？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: matter-of-fact
+        description:
+        line: 我要不杀他，刚才死的就是你。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 踢开大脸猫的尸体
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 他本来就打算杀了你们所有人，独吞钱财，不是什么好人。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: wry
+        description:
+        line: 你们这队伍是真难带啊……
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: firm
+        description:
+        line: 别带我，我和他们可不是一伙的。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 推开林弦，走向保险柜墙
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 我和他也是第一次见面。我不认得他，我只认卡通猫面具。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: sarcastic
+        description:
+        line: 你们的接头暗号能再复古一点吗？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 扫视墙上保险柜
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 停在写有林弦的保险柜前
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: frustrated
+        description: 哼了一声，扔掉小电脑
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: annoyed
+        description:
+        line: 竟然是机械锁……
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 耳朵贴柜门，拨动机械密码转轮
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: curious
+        description:
+        line: 这个【林弦】的保险柜里有什么？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 不知道。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你认识林弦？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 不认识。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 那你干嘛开他的保险柜？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: irritated
+        description:
+        line: 你哪来那么多问题？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: angry
+        description: 透过面具瞪林弦一眼
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 哪凉快去哪呆着去！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 继续弄密码锁
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 看着密码转轮沉思
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 试试19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: confused
+        description:
+        line: 什么？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 没好气地看着林弦
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 我说，那个保险柜的密码，试试看19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 这是什么数字？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: confident
+        description:
+        line: 我的生日。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: speechless
+        description:
+        line: ……
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: incredulous
+        description:
+        line: 你是不是脑子有病？！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: serious
+        description: 深吸一口气，认真地看向女人
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 听着。警报随时会响，没人会在这种场合开玩笑。我和你的目的是一致的，甚至……我比你更好奇，这个保险柜里到底藏了什么。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 相信我。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 向前一步，一脸严肃
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 这个密码，绝对错不了！
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 看着林弦，似乎被说服
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 你……再说一遍。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: hopeful
+        description: 拨动密码转轮，回头看一眼林弦，按下锁扣
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: frustrated
+        description: 锁扣没开
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: shocked
+        description: 愣住
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: angry
+        description: 眉毛抽动，深吸一口气
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 我刚才真该让你猫哥把你打死！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: defensive
+        description:
+        line: 他非说要喊他脸哥……
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: furious
+        description:
+        line: 够了！！！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: threatening
+        description: 掏枪指着林弦
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 再说一个字！我就杀了你！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: compliant
+        description: 举手，后退两步
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: frustrated
+        description: 不断尝试破解密码，但无果
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 蹲地上托下巴思考
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: 'null'
+        emotion: alarming
+        description: 电路接通声，警报响起
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 一拳捶在保险柜上，叹气
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 抬腕看表
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: relaxed
+        description: 起身伸懒腰
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: calm
+        description:
+        line: 没时间了，明天再来吧。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: sarcastic
+        description:
+        line: 呵呵！明天？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion:
+        description: 不屑地笑
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: mocking
+        description:
+        line: 你把这里炸成这样！你觉得你明天还有机会进来？！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: knowing smile
+        description:
+        line: 你确实是没机会了……
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 但我可以。我每一天都可以。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: farewell
+        description:
+        line: 拜拜～
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: 'null'
+        emotion: cataclysmic
+        description: 刺眼白光爆炸，吞没一切
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: awakening
+        description: 在床上睁开眼睛
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 坐起身，看向电子时钟
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: 'null'
+        emotion:
+        description: 电子时钟显示2022年12月7日 00:42:01
+        line:
+        parenthetical:
+        subtext:
+        to:
+  - scene_id: S02
+    slug: INT. 银行内部通道岔口 - 夜
+    location_ref: LOC_BANK
+    time_of_day: 夜
+    summary: 大脸猫与林弦来到通道岔口，蒙面小弟刚解除警报系统便被大脸猫从后脑勺枪杀，借口其勾引大嫂。
+    intention: 强化大脸猫的嗜杀无义，进一步减少同伙，制造黑色幽默与紧张氛围，推进向金库的行程。
+    beats:
+      - type: action
+        character_ref:
+        emotion:
+        description: 大脸猫和林弦来到一个通道岔口。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_THUG1
+        emotion:
+        description: 一个蒙面男子正在捣鼓配电箱。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: impatient
+        description:
+        line: 还没好吗？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_THUG1
+        emotion: relieved
+        description: 蒙面男剪掉一根电线，腾出手擦擦汗。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_THUG1
+        emotion: relieved
+        description:
+        line: 弄好了，警报系统解除了！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: ruthless
+        description: 又是顶着后脑勺一枪！配电箱里全是血！
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: nervous
+        description:
+        line: 不是大哥，你这样搞的我很没安全感啊！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: questioning
+        description:
+        line: 你这个小弟也手脚不干净？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: smug
+        description:
+        line: 这家伙手脚还算干净，但他勾引你大嫂！你说我能不能留他？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: sarcastic
+        description:
+        line: 你这大哥这么难当吗？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: dismissive
+        description:
+        line: 哎呀不要在意这些小细节啦！又少个人分钱你不该高兴吗？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: annoyed
+        description: 林弦打开他搂来的手
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: suspicious
+        description:
+        line: 你不会一会儿也打算把我给崩了，自己独吞钱财吧？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: emphatic
+        description:
+        line: 那必须不会！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 大脸猫拍着胸腹，然后从腰后摸出一坨胶布粘起来的灰色物体，递给林弦。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: curious
+        description:
+        line: 这是什么？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: matter-of-fact
+        description:
+        line: C4炸药。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: confident
+        description:
+        line: 你脸哥我为人坦荡！从不做小人之事！一会儿你要是觉得我想杀你，你就直接按下开关把你脸哥一起炸飞！这回放心了吧？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: accepting
+        description:
+        line: 行，靠谱！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 林弦比了个大拇指，收下C4炸药。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 沙沙沙……两人继续前进。
+        line:
+        parenthetical:
+        subtext:
+        to:
+  - scene_id: S03
+    slug: INT. 银行内部通道 - 夜
+    location_ref: LOC_BANK
+    time_of_day: 夜
+    summary: 两人继续前进，另一蒙面小弟从地下通道上来报告已切断主供电，大脸猫再次枪杀，只剩下林弦和他两人分赃。
+    intention: 将同伙全部清除，聚焦于主角与大脸猫的临时联盟，提升林弦的危机感，同时为后续独处金库埋下伏笔。
+    beats:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 兴奋
+        description:
+        line: 你是说……你每天都会做同样的一个梦？并且每次都会在00点42分准时醒来？那你爽爆了啊哥们！在梦里想杀谁就杀谁！想干什么就干什么！还能体验各种作死的游戏！嘶……想想都刺激啊！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 冷酷
+        description: 咔嚓一声把弹夹推进手枪，上了膛。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 强势
+        description:
+        line: 不过，今晚你就不用在梦里找刺激了，哥带你玩点真实的！我小弟把银行门撬开了，跟我走！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 顺从
+        description: 林弦点点头，扶正脸上的奥特曼面具，起身跟上步伐。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 自然
+        description:
+        line: 怎么称呼啊大哥？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 随意
+        description:
+        line: 道上都叫我大脸猫。你叫我脸哥就行。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 认真
+        description:
+        line: 脸哥，我的任务是什么？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 命令
+        description:
+        line: 现在还不到你这密码专家出手的时候，跟着我，别乱跑。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref:
+        emotion: 紧张
+        description: 二人小跑到银行门口。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 质问
+        description:
+        line: 都搞定了？
+        parenthetical:
+        subtext:
+        to: CHAR_THUG1
+      - type: action
+        character_ref: CHAR_THUG1
+        emotion: 肯定
+        description: 小弟点点头。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 残忍
+        description: 大脸猫用手枪顶住小弟的额头——嘭！！血溅了一墙！
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 若无其事
+        description: 他随手擦擦枪口，拍拍林弦肩膀。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 得意
+        description:
+        line: 现在少了一个人分钱，我们能多分不少钱呢！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 惊讶
+        description:
+        line: 他不是你小弟吗？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 狡辩
+        description:
+        line: 他这个人手脚不干净，为了我们的安全，留不得！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 强制
+        description: 大脸猫拉着林弦往里面走。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_THUG2
+        emotion: 工作
+        description: 两人来到一个通道岔口。一个蒙面男子正在捣鼓配电箱。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 不耐烦
+        description:
+        line: 还没好吗？
+        parenthetical:
+        subtext:
+        to: CHAR_THUG2
+      - type: action
+        character_ref: CHAR_THUG2
+        emotion: 紧张
+        description: 蒙面男剪掉一根电线，腾出手擦擦汗。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_THUG2
+        emotion: 松口气
+        description:
+        line: 弄好了，警报系统解除了！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 冷血
+        description: 嘭！！又是顶着后脑勺一枪！配电箱里全是血！
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 慌乱
+        description:
+        line: 不是大哥，你这样搞的我很没安全感啊！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 恼怒
+        description:
+        line: 这家伙手脚还算干净，但他勾引你大嫂！你说我能不能留他？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 吐槽
+        description:
+        line: 你这大哥这么难当吗？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 轻巧
+        description:
+        line: 哎呀不要在意这些小细节啦！又少个人分钱你不该高兴吗？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 抗拒
+        description: 林弦打开他搂来的手。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 怀疑
+        description:
+        line: 你不会一会儿也打算把我给崩了，自己独吞钱财吧？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 保证
+        description:
+        line: 那必须不会！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 展示诚意
+        description: 大脸猫拍着胸腹，然后从腰后摸出一坨胶布粘起来的灰色物体，递给林弦。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 好奇
+        description:
+        line: 这是什么？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 坦荡
+        description:
+        line: C4炸药。你脸哥我为人坦荡！从不做小人之事！一会儿你要是觉得我想杀你，你就直接按下开关把你脸哥一起炸飞！这回放心了吧？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 信任
+        description:
+        line: 行，靠谱！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 满意
+        description: 林弦比了个大拇指，收下C4炸药。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: 行进
+        description: 两人继续前进。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: 急切
+        description: 一个蒙面男子从地下通道跑上来。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref:
+        emotion: 报告
+        description:
+        line: 老大，我把主供电线路切断——
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 无情
+        description: 嘭！！！一地脑花。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 麻木
+        description: 林弦摆摆手，表示自己已经习惯了。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 自嘲
+        description:
+        line: 没事脸哥。你就直接告诉我现在还剩几个人分钱吧？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 兴奋
+        description:
+        line: 就咱俩啦！嘿嘿嘿……就咱俩啦！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 急迫
+        description: 大脸猫推着林弦快步往里面走。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: 呈现
+        description: 眼前是一面厚实的黑墙，墙中间是一道银色密码门。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 催促
+        description:
+        line: 你看，到仓库啦！该你这密码专家出手啦！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 明知故问
+        description:
+        line: 密码多少？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 焦急
+        description:
+        line: 呸！我要知道密码还找你这密码专家作甚！别闹了老弟，抓紧吧！留给我们的时间不多了！主电力一旦恢复，安保系统就会自动报警！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 淡定
+        description:
+        line: 我知道你很急，但你先别急。
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 假装
+        description: 林弦走到密码门前开始捣鼓。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 焦虑
+        description: 大脸猫来回踱步，脸上横肉拧成一团。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 急切
+        description:
+        line: 你大概需要多久？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 神秘
+        description:
+        line: 10。
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 逃跑
+        description: 林弦开始倒数“9……8……7……”然后飞奔而出！
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 惊恐
+        description: 大脸猫一脸震惊看着飞奔而出的林弦！然后扭头，看到贴在密码门上的C4炸药！还有引爆器上不断变化的红色数字！！
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 求生
+        description: 对着墙外一个猛扑——
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: 爆炸
+        description: 轰！！！！！轰！！！！！轰！！！！！震天的爆炸声击穿他的耳膜！数不清的砖块铁块砸在身上！
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 愤怒
+        description: 大脸猫擦了一脸血，大吼。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 怒吼
+        description:
+        line: 我特么……你不是密码专家吗？你就这样破解密码的！？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 讽刺
+        description:
+        line: 你就说效率不效率吧。你看，里面就是仓库了。
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 无奈
+        description: 大脸猫骂骂咧咧的爬起来。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 无奈
+        description:
+        line: 专家就特么没一个靠谱的……
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 探索
+        description: 林弦走进墙面炸开的大洞。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 震惊困惑
+        description: 仓库里空荡荡的，墙壁上镶嵌着整齐排列的保险柜，每一个都写着不同的人名。林弦走近查看，看到写有【林弦】的保险柜，后退一步，震惊。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 威胁
+        description: 咔嚓。身后，灼热的枪口顶住林弦后脑勺。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 从紧张到坦白到得意
+        description:
+        line: 
+          脸哥，手下留情。脸哥，你可得讲道理，我一没手脚不干净、二没勾引大嫂，你肃清家门也不能冤枉到我头上吧？好吧脸哥，我承认，我确实骗了你。其实我压根不是什么密码专家……我就是在广场溜达，随便捡了个奥特曼面具戴上，结果你直接蹦出来、二话不说拉着我上车了！但我也不知道这奥特曼面具是你们的【接头暗号】啊！有一说一，我只是出于好玩骗了你，我可没害你。再说啦……你今天要是带那个真的密码专家来，保不准等天亮了都破解不了密码！遇上我是你歪打正着的福气啊！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 轻笑
+        description: 银铃般的轻笑声从身后传来。随即，那灼热的枪口也离开了林弦的头皮。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 惊讶
+        description: 林弦回头，发现身后之人是一位苗条女性，盘着头发，脸上戴着和他一模一样的奥特曼面具。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 疑惑
+        description:
+        line: 我脸哥呢？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 指示
+        description: 女人下巴指了指脚边。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: 揭示
+        description: 大脸猫戴着猫咪面具躺在血泊里，手里握着枪，后脑勺上好大一个洞。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 质问
+        description:
+        line: 你杀了他？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 冷静
+        description:
+        line: 我要不杀他，刚才死的就是你。他本来就打算杀了你们所有人，独吞钱财，不是什么好人。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 吐槽
+        description:
+        line: 你们这队伍是真难带啊……
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 撇清
+        description:
+        line: 别带我，我和他们可不是一伙的。我和他也是第一次见面。我不认得他，我只认卡通猫面具。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 调笑
+        description:
+        line: 你们的接头暗号能再复古一点吗？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 专注
+        description: 女人没有搭理林弦。她和林弦擦肩而过，目光一一扫过墙上的保险柜。最终，她停留在写有【林弦】的保险柜前。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 不屑
+        description: 看着箱体上八个密码转轮，她哼了一声，扔掉手上的小电脑。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 自语
+        description:
+        line: 竟然是机械锁……
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 专心
+        description: 女人将耳朵贴在保险柜上，咔哒咔哒拨动密码转轮。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 好奇
+        description:
+        line: 这个【林弦】的保险柜里有什么？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 冷淡
+        description:
+        line: 不知道。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 追问
+        description:
+        line: 你认识林弦？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 不耐烦
+        description:
+        line: 不认识。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 好奇
+        description:
+        line: 那你干嘛开他的保险柜？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 怒斥
+        description:
+        line: 你哪来那么多问题？哪凉快去哪呆着去！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 专注
+        description: 她继续扒拉密码锁。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 思考
+        description: 林弦看着保险柜上的八个密码转轮沉思……
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 提议
+        description:
+        line: 试试19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 不解
+        description: 女人没好气的看着林弦。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 不解
+        description:
+        line: 什么？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 坚持
+        description:
+        line: 我说，那个保险柜的密码，试试看19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 质疑
+        description:
+        line: 这是什么数字？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 自信
+        description:
+        line: 我的生日。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref:
+        emotion: 尴尬
+        description: 沉默。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 恼怒
+        description:
+        line: 你是不是脑子有病？！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 严肃自信
+        description:
+        line: 听着。警报随时会响，没人会在这种场合开玩笑。我和你的目的是一致的，甚至……我比你更好奇，这个保险柜里到底藏了什么。相信我。这个密码，绝对错不了！
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 被说服
+        description: 女人看着林弦，没有说话。但显然，她被林弦自信的气势说服了。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 半信半疑
+        description:
+        line: 你……再说一遍。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 坚定
+        description:
+        line: 19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 期待落空
+        description: 咔哒、咔哒……女人把八个密码转轮拨好，回头看了林弦一眼，按下锁扣——咔哒！没开。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 愣住
+        description:
+        line: 阿勒？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 愤怒积累
+        description: 女人眉毛抽动，深吸一口气。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 愤怒
+        description:
+        line: 我刚才真该让你猫哥把你打死！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 小声纠正
+        description:
+        line: 他非说要喊他脸哥……
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 暴怒
+        description:
+        line: 够了！！！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 威胁
+        description: 女人忍无可忍，掏枪指着林弦！
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 怒不可遏
+        description:
+        line: 再说一个字！我就杀了你！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 顺从但好奇
+        description: 林弦举手，老实后退两步。他不怕死，但他更好奇这保险柜里到底藏了什么。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 焦虑
+        description: 咔哒、咔哒、咔嚓……女人不停的尝试破解密码，但却毫无进展。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 沉思
+        description: 林弦蹲在地上，托着下巴思考，也没有什么头绪。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion: 紧张
+        description: 咔！随着一声电路接通的脆响，四周响起刺耳的警报。看来，是供电主线路恢复了，自动报警。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 沮丧
+        description: 女人一拳捶在保险柜上，叹了口气。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 从容
+        description: 林弦抬起腕表，看了一眼时间：【00：41：53】他起身伸了个懒腰。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 轻松
+        description:
+        line: 没时间了，明天再来吧。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 嘲笑
+        description:
+        line: 呵呵！明天？你把这里炸成这样！你觉得你明天还有机会进来？！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 神秘
+        description:
+        line: 你确实是没机会了……但我可以。我每一天都可以。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 告别
+        description: 他对着女人挥挥手。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 告别
+        description:
+        line: 拜拜～
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref:
+        emotion: 毁灭
+        description: 轰！！！！！轰！！！！！轰！！！！！忽然到来的白光！整个世界一片光亮！来不及感受到任何疼痛，来不及做出任何反应！炙热的白光瞬间吞没一切！将这世间，蒸发殆尽！
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 醒来
+        description: 
+          夜风吹起窗纱，起舞弄影。月光透过玻璃，洒下浮霜。楼下传来夜市摊男人们戏酒划拳的吆喝。隔壁卫生间管道响起哗啦啦的冲水声。书桌上的稿纸在风中起伏、笔记本像是河蚌一样开开合合。卧室一角的床上，林弦睁开眼睛……
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 习惯
+        description: 他吸吸鼻子坐起身来，看向床头柜上的电子时钟——【2022年12月7日】【00：42：01】……【00：42：02】……【00：42：03】……【00：42：04】……
+        line:
+        parenthetical:
+        subtext:
+        to:
+  - scene_id: S04
+    slug: INT. 银行金库门前 - 夜
+    location_ref: LOC_BANK
+    time_of_day: 夜
+    summary: 到了金库厚重的密码门前，林弦假装破解密码却暗中安置C4炸药，迅速倒计时后炸开墙面，大脸猫被爆炸波及受伤。
+    intention: 展现林弦急智与胆量，以意外方式解决障碍，制造激烈动作场面，并引出金库核心悬念。
+    beats:
+      - type: action
+        character_ref:
+        emotion:
+        description: 林弦和大脸猫来到金库厚重的黑墙前，面前是一道银色密码门。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 急躁
+        description:
+        line: 密码多少？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 急迫
+        description:
+        line: 呸！我要知道密码还找你这密码专家作甚！别闹了老弟，抓紧吧！留给我们的时间不多了！主电力一旦恢复，安保系统就会自动报警！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 从容
+        description:
+        line: 我知道你很急，但你先别急。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 镇定
+        description: 林弦走到密码门前，假装研究密码，暗中将C4炸药贴在门上。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 焦虑
+        description: 大脸猫焦急地来回踱步，脸上的横肉拧成一团。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 急切
+        description:
+        line: 你大概需要多久？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 平静、戏谑
+        description:
+        line: 10。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 震惊
+        description:
+        line: 10分钟！？这也太久了吧！！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 紧迫
+        description:
+        line: 9……8……7……
+        parenthetical: 倒计时，同时向外飞奔
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 震惊
+        description: 大脸猫一脸震惊看着飞奔而出的林弦，然后扭头看到贴在密码门上的C4炸药和闪烁的引爆器。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 惊恐
+        description: 大脸猫骂了一声，对着墙外一个猛扑。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 炸弹爆炸，巨大的轰鸣声伴随着砖块铁块砸落。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 痛苦、愤怒
+        description: 大脸猫从废墟中爬起，浑身是血，咳嗽不止。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 愤怒
+        description:
+        line: 我特么……你不是密码专家吗？你就这样破解密码的！？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 得意
+        description: 林弦捂着耳朵走过来，得意地看着大脸猫。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 得意
+        description:
+        line: 你就说效率不效率吧。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 得意
+        description:
+        line: 你看，里面就是仓库了。
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 骂骂咧咧
+        description:
+        line: 专家就特么没一个靠谱的……
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 林弦走进墙面炸开的大洞，进入仓库。
+        line:
+        parenthetical:
+        subtext:
+        to:
+  - scene_id: S05
+    slug: INT. 银行金库内部 - 夜
+    location_ref: LOC_VAULT
+    time_of_day: 夜
+    summary: 林弦进入金库发现保险柜上写有自己的名字，神秘女人出现枪杀大脸猫，声称只为保险柜而来，反复尝试机械密码锁未果；警报响起，女人绝望，林弦却暗示明日再来，随后白光爆炸吞噬一切。
+    intention: 揭示核心谜团（林弦名字的保险柜），引入关键配角神秘女人，通过密码错误制造转折，爆炸将剧情推向梦境循环的临界点。
+    beats:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 疑惑
+        description: 林弦走进被炸开的墙面大洞，进入金库，环顾四周，发现空无一人，只有墙壁上整齐排列的保险柜。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 震惊
+        description: 林弦走近查看，发现每个保险柜上都写着人名，其中一个赫然写着“林弦”，他后退一步。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 冷静
+        description: 咔嚓一声，灼热的枪口从身后顶住林弦的后脑勺。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 紧张
+        description:
+        line: 脸哥，手下留情。
+        parenthetical:
+        subtext: 以为是大脸猫要杀他。
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 辩解
+        description:
+        line: 脸哥，你可得讲道理，我一没手脚不干净、二没勾引大嫂，你肃清家门也不能冤枉到我头上吧？
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 坦白
+        description:
+        line: 好吧脸哥，我承认，我确实骗了你。其实我压根不是什么密码专家……我就是在广场溜达，随便捡了个奥特曼面具戴上，结果你直接蹦出来、二话不说拉着我上车了！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 真诚
+        description:
+        line: 但我也不知道这奥特曼面具是你们的接头暗号啊！有一说一，我只是出于好玩骗了你，我可没害你。
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 讨好
+        description:
+        line: 再说啦……你今天要是带那个真的密码专家来，保不准等天亮了都破解不了密码！遇上我是你歪打正着的福气啊！
+        parenthetical:
+        subtext:
+        to: CHAR_BIGCAT
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 轻蔑
+        description: 身后传来银铃般的轻笑声，枪口离开了林弦的头皮。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 讽刺
+        description:
+        line: 我可没那么笨！要是到天亮都破解不了密码门……还算什么密码专家？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 惊讶
+        description: 林弦回头，发现身后是一个戴着相同奥特曼面具的苗条女性。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 疑惑
+        description:
+        line: 我脸哥呢？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 冷漠
+        description: 女人下巴指了指脚边，大脸猫戴着卡通猫面具躺在血泊中，后脑勺一个洞。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 平静
+        description:
+        line: 你杀了他？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 冷静
+        description:
+        line: 我要不杀他，刚才死的就是你。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 厌恶
+        description: 女人踢开大脸猫的尸体。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 轻蔑
+        description:
+        line: 他本来就打算杀了你们所有人，独吞钱财，不是什么好人。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 感慨
+        description:
+        line: 你们这队伍是真难带啊……
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 冷淡
+        description:
+        line: 别带我，我和他们可不是一伙的。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 决绝
+        description: 女人推开林弦，径直走向墙壁上的保险柜。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 专注
+        description: 她停留在写有“林弦”的保险柜前，看着八个密码转轮，扔掉手中的小电脑。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 失望
+        description:
+        line: 竟然是机械锁……
+        parenthetical: 哼了一声
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 专注
+        description: 女人将耳朵贴在保险柜上，开始咔哒咔哒拨动密码转轮。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 好奇
+        description:
+        line: 这个林弦的保险柜里有什么？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 冷淡
+        description:
+        line: 不知道。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 追问
+        description:
+        line: 你认识林弦？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 不耐烦
+        description:
+        line: 不认识。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 困惑
+        description:
+        line: 那你干嘛开他的保险柜？
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 恼怒
+        description:
+        line: 你哪来那么多问题？哪凉快去哪呆着去！
+        parenthetical: 狠狠瞪了林弦一眼
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 烦躁
+        description: 女人继续扒拉密码锁，林弦看着保险柜沉思。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 提议
+        description:
+        line: 试试19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 疑惑
+        description:
+        line: 什么？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 重复
+        description:
+        line: 我说，那个保险柜的密码，试试19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 不耐烦
+        description:
+        line: 这是什么数字？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 肯定
+        description:
+        line: 我的生日。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 难以置信
+        description: 一阵沉默。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 真诚发问
+        description:
+        line: 你是不是脑子有病？！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 严肃认真
+        description:
+        line: 听着。警报随时会响，没人会在这种场合开玩笑。我和你的目的是一致的，甚至……我比你更好奇，这个保险柜里到底藏了什么。相信我，这个密码绝对错不了！
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 动摇
+        description: 女人看着林弦，没有说话，但显然被他的气势说服。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 犹豫
+        description:
+        line: 你……再说一遍。
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 坚定
+        description:
+        line: 19990320。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 紧张
+        description: 女人把八个密码转轮拨好，回头看了林弦一眼，按下锁扣。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 失望
+        description: 咔哒！没开。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 愣住
+        description: 林弦愣住了，密码居然不对。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 愤怒
+        description: 女人眉毛抽动，深吸一口气，掏枪指着林弦。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 咬牙切齿
+        description:
+        line: 再说一个字！我就杀了你！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 顺从
+        description: 林弦举手，老实后退两步，蹲在地上思考。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 焦躁
+        description: 女人不停地尝试破解密码，咔哒咔哒声不断。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 绝望
+        description: 随着一声电路接通的脆响，四周响起刺耳的警报。女人一拳捶在保险柜上，叹了口气。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 平静
+        description: 林弦抬起腕表看了一眼时间：00：41：53。他起身伸了个懒腰。
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 轻松
+        description:
+        line: 没时间了，明天再来吧。
+        parenthetical:
+        subtext:
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 嘲讽
+        description:
+        line: 呵呵！明天？你把这里炸成这样！你觉得你明天还有机会进来？！
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 微笑
+        description:
+        line: 你确实是没机会了……但我可以。我每一天都可以。
+        parenthetical:
+        subtext: 暗示梦境循环
+        to: CHAR_WOMAN
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 轻松
+        description:
+        line: 拜拜～
+        parenthetical: 挥手
+        subtext:
+        to: CHAR_WOMAN
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 毁灭
+        description: 突然间，炙热的白光轰然爆发，吞没整个世界，一切蒸发殆尽。
+        line:
+        parenthetical:
+        subtext:
+        to:
+  - scene_id: S06
+    slug: INT. 林弦卧室 - 夜
+    location_ref: LOC_BEDROOM
+    time_of_day: 夜
+    summary: 林弦在卧室床上惊醒，窗外夜市喧闹，月光洒入，床头电子时钟显示00:42，一切恢复原状，暗示这是重复发生的梦境。
+    intention: 揭示整个抢劫事件是林弦的循环梦境，点明时间规则（00:42醒来），为故事奠定科幻悬疑基调，并衔接开篇的梦之设定。
+    beats:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 好奇
+        description: 戴着卡通猫面具，看着林弦
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 好奇
+        description:
+        line: 你是说……你每天都会做同样的一个梦？并且每次都会在00点42分准时醒来？
+        parenthetical:
+        subtext:
+        to: CHAR_LIN
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 兴奋
+        description:
+        line: 那你爽爆了啊哥们！在梦里想杀谁就杀谁！想干什么就干什么！还能体验各种作死的游戏！嘶……想想都刺激啊！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 认真
+        description: 把弹夹推进手枪，上了膛
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 挑衅
+        description:
+        line: 不过，今晚你就不用在梦里找刺激了，哥带你玩点真实的！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 命令
+        description: 指着街对面的银行
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 我小弟把银行门撬开了，跟我走！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 顺从
+        description: 点点头，扶正脸上的奥特曼面具，起身跟上
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 随意
+        description:
+        line: 怎么称呼啊大哥？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 自得
+        description:
+        line: 道上都叫我大脸猫。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 咧嘴笑笑，脸上的横肉将卡通猫面具挤的更加二次元
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 你叫我脸哥就行。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 脸哥，我的任务是什么？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 现在还不到你这密码专家出手的时候，跟着我，别乱跑。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 两人小跑到银行门口
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 都搞定了？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 开门的小弟点点头
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 用手枪顶住小弟的额头，开枪
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 血溅一墙，小弟倒下
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 轻松
+        description: 随手擦擦枪口，拍拍林弦肩膀
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 现在少了一个人分钱，我们能多分不少钱呢！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 疑惑
+        description:
+        line: 他不是你小弟吗？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 他这个人手脚不干净，为了我们的安全，留不得！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 两人来到通道岔口，一个蒙面男子（CHAR_THUG1）正在捣鼓配电箱
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 还没好吗？
+        parenthetical:
+        subtext:
+        to: CHAR_THUG1
+      - type: action
+        character_ref: CHAR_THUG1
+        emotion: 专注
+        description: 剪掉一根电线，腾出手擦擦汗
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_THUG1
+        emotion:
+        description:
+        line: 弄好了，警报系统解除了！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 一枪打在后脑勺，配电箱溅血
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 不安
+        description: 指指地上的尸体
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 不是大哥，你这样搞的我很没安全感啊！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你这个小弟也手脚不干净？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 愤怒
+        description:
+        line: 这家伙手脚还算干净，但他勾引你大嫂！你说我能不能留他？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你这大哥这么难当吗？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 哎呀不要在意这些小细节啦！又少个人分钱你不该高兴吗？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 不悦
+        description: 打开他搂来的手
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你不会一会儿也打算把我给崩了，自己独吞钱财吧？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 讨好
+        description: 拍着胸腹，从腰后摸出一坨C4炸药
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 那必须不会！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 这是什么？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: C4炸药。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 你脸哥我为人坦荡！从不做小人之事！一会儿你要是觉得我想杀你，你就直接按下开关把你脸哥一起炸飞！这回放心了吧？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 满意
+        description: 比了个大拇指，收下C4炸药
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 行，靠谱！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 一个蒙面男子（CHAR_THUG2）从地下通道跑上来
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_THUG2
+        emotion:
+        description:
+        line: 老大，我把主供电线路切断——
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 一枪打爆他的头，一地脑花
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 习以为常
+        description: 摆摆手
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 没事脸哥。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你就直接告诉我现在还剩几个人分钱吧？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 得意
+        description:
+        line: 就咱俩啦！嘿嘿嘿……就咱俩啦！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description: 推着林弦快步往里面走
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 你看，到仓库啦！该你这密码专家出手啦！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 眼前是一面厚实的黑墙，中间是一道银色密码门
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 密码多少？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 恼怒
+        description:
+        line: 呸！我要知道密码还找你这密码专家作甚！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 别闹了老弟，抓紧吧！留给我们的时间不多了！主电力一旦恢复，安保系统就会自动报警！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 我知道你很急，但你先别急。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 假装
+        description: 走到密码门前开始捣鼓
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 焦急
+        description: 来回踱步，脸上横肉拧成一团
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 你大概需要多久？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 淡定
+        description:
+        line: 10。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 震惊
+        description:
+        line: 10分钟！？这也太久了吧！！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 倒数
+        description:
+        line: 9……8……7……
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 转身飞奔而出
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 惊恐
+        description: 一脸震惊看着林弦，然后扭头看到贴在密码门上的C4炸药和倒计时引爆器
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion: 咒骂
+        description:
+        line: Shift！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 拼命
+        description: 对着墙外猛扑
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 爆炸！震天的爆炸声，砖块铁块砸下
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 愤怒
+        description: 擦了一脸血，大吼
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 我特么……你不是密码专家吗？你就这样破解密码的！？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 得意
+        description:
+        line: 你就说效率不效率吧。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 捂着耳朵走过来，指着前面坍塌的墙面
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你看，里面就是仓库了。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_BIGCAT
+        emotion: 愤怒
+        description: 骂骂咧咧地爬起来
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_BIGCAT
+        emotion:
+        description:
+        line: 专家就特么没一个靠谱的……
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 好奇
+        description: 走进墙面炸开的大洞，进入仓库
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 仓库里空荡荡的，墙壁上镶嵌着整齐排列的保险柜
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 走近查看，保险柜上写着不同的人名
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 震惊
+        description: 看到写有“林弦”的保险柜，后退一步，震惊
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 身后，灼热的枪口顶住他后脑勺
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 紧张
+        description:
+        line: 脸哥，手下留情。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 脸哥，你可得讲道理，我一没手脚不干净、二没勾引大嫂，你肃清家门也不能冤枉到我头上吧？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 好吧脸哥，我承认，我确实骗了你。其实我压根不是什么密码专家……我就是在广场溜达，随便捡了个奥特曼面具戴上，结果你直接蹦出来、二话不说拉着我上车了！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 但我也不知道这奥特曼面具是你们的【接头暗号】啊！有一说一，我只是出于好玩骗了你，我可没害你。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 再说啦……你今天要是带那个真的密码专家来，保不准等天亮了都破解不了密码！遇上我是你歪打正着的福气啊！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 背后传来银铃般的轻笑，枪口离开林弦的头皮
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 轻蔑
+        description:
+        line: 噗呲——我可没那么笨！要是到天亮都破解不了密码门……还算什么密码专家？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 惊讶
+        description: 回头，看到身后是一位苗条女性，盘着头发，戴着奥特曼面具
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 我脸哥呢？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 冷漠
+        description: 用下巴指了指脚边
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 大脸猫戴着猫咪面具躺在血泊里，后脑勺上一个洞
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你杀了他？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 冷静
+        description:
+        line: 我要不杀他，刚才死的就是你。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 不屑
+        description: 踢开尸体
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 他本来就打算杀了你们所有人，独吞钱财，不是什么好人。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你们这队伍是真难带啊……
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 纠正
+        description:
+        line: 别带我，我和他们可不是一伙的。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 专注
+        description: 推开林弦，往墙上保险柜走去
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 我和他也是第一次见面。我不认得他，我只认卡通猫面具。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你们的接头暗号能再复古一点吗？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 目标明确
+        description: 没有搭理林弦，目光扫过保险柜，停留在写有“林弦”的保险柜前
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 懊恼
+        description: 看着八个密码转轮，哼了一声，扔掉手上的小电脑
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 烦躁
+        description:
+        line: 竟然是机械锁……
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 专注
+        description: 将耳朵贴在保险柜上，拨动密码转轮
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 好奇
+        description: 凑过来
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 这个“林弦”的保险柜里有什么？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 不知道。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 你认识林弦？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 不认识。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 那你干嘛开他的保险柜？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 不耐烦
+        description:
+        line: 你哪来那么多问题？
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 愤怒
+        description: 透过面具狠狠瞪了林弦一眼
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 命令
+        description:
+        line: 哪凉快去哪呆着去！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 专注
+        description: 继续扒拉密码锁
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 思考
+        description: 看着保险柜上的八个密码转轮沉思
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 试试19990320。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 疑惑
+        description:
+        line: 什么？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 我说，那个保险柜的密码，试试看19990320。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 这是什么数字？
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 肯定
+        description:
+        line: 我的生日。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 怀疑
+        description:
+        line: ……你是不是脑子有病？！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 严肃
+        description: 深吸一口气，认真的目光透过面具
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 诚恳
+        description:
+        line: 听着。警报随时会响，没人会在这种场合开玩笑。我和你的目的是一致的，甚至……我比你更好奇，这个保险柜里到底藏了什么。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 坚定
+        description:
+        line: 相信我。这个密码，绝对错不了！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 犹豫
+        description: 看着林弦，没有说话，显然被说服
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 你……再说一遍。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 19990320。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 紧张
+        description: 把八个密码转轮拨好，回头看了林弦一眼，按下锁扣
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 锁扣咔嚓一声，没开
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 错愕
+        description: 愣住，密码居然不对
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 压抑的愤怒
+        description: 眉毛抽动，深吸一口气
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion:
+        description:
+        line: 我刚才真该让你猫哥把你打死！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 弱弱地
+        description:
+        line: 他非说要喊他脸哥……
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 暴怒
+        description:
+        line: 够了！！！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 愤怒
+        description: 掏枪指着林弦
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 威胁
+        description:
+        line: 再说一个字！我就杀了你！
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 顺从
+        description: 举手，老实后退两步
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 女人不停尝试破解密码，毫无进展；林弦蹲在地上托腮思考
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 咔！电路接通，四周响起刺耳警报
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_WOMAN
+        emotion: 沮丧
+        description: 一拳捶在保险柜上，叹了口气
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 从容
+        description: 抬起腕表看时间
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 时间显示00:41:53
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 无所谓
+        description: 起身伸了个懒腰
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 没时间了，明天再来吧。
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_WOMAN
+        emotion: 讽刺
+        description:
+        line: 呵呵！明天？你把这里炸成这样！你觉得你明天还有机会进来？！
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion: 自信
+        description:
+        line: 你确实是没机会了……但我可以。我每一天都可以。
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 告别
+        description: 对着女人挥挥手
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: dialogue
+        character_ref: CHAR_LIN
+        emotion:
+        description:
+        line: 拜拜～
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 忽然到来的白光！世界一片光亮，炙热的白光瞬间吞没一切
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 转场：夜风吹起窗纱，月光洒下，书桌上的稿纸在风中起伏
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion:
+        description: 在床上睁开眼睛
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref: CHAR_LIN
+        emotion: 平静
+        description: 吸吸鼻子坐起身来，看向床头柜上的电子时钟
+        line:
+        parenthetical:
+        subtext:
+        to:
+      - type: action
+        character_ref:
+        emotion:
+        description: 电子时钟显示：2022年12月7日 00:42:01 ... 02 ... 03 ... 04
+        line:
+        parenthetical:
+        subtext:
+        to:
