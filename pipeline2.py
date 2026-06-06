@@ -288,6 +288,14 @@ def load_markdown(relative_path: str) -> str:
         return handle.read()
 
 
+def render_prompt_template(template: str, replacements: dict[str, str]) -> str:
+    """只替换约定变量，避免 JSON 示例中的花括号被 str.format 误解析。"""
+    rendered = template
+    for key, value in replacements.items():
+        rendered = rendered.replace("{" + key + "}", value)
+    return rendered
+
+
 def run_agent(agent_file: str, user_prompt: str, model: str = DEFAULT_MODEL, extra_system: str = "") -> dict:
     system = load_markdown(os.path.join("agents", f"{agent_file}.md"))
     if extra_system:
@@ -943,13 +951,16 @@ def beat_generator_agent(scene: Scene, assets: AssetBox, previous_scenes: List[S
     scene_location = location_name_by_id(assets, scene.location_ref) or scene.slug
     prior_context = "\n".join(f"- {item}" for item in recent_beat_context(previous_scenes)) or "- 无"
 
-    system = agent_prompt.format(
-        scene_summary=scene.summary,
-        scene_intention=scene.intention,
-        scene_source_text=scene.source_text,
-        character_list=char_list,
-        beat_writing_standard=beat_standard,
-        scene_location=f"{scene_location}（{scene.location_ref or '未绑定地点'}）",
+    system = render_prompt_template(
+        agent_prompt,
+        {
+            "scene_summary": scene.summary,
+            "scene_intention": scene.intention,
+            "scene_source_text": scene.source_text,
+            "character_list": char_list,
+            "beat_writing_standard": beat_standard,
+            "scene_location": f"{scene_location}（{scene.location_ref or '未绑定地点'}）",
+        },
     )
     system += (
         "\n\n补充要求：\n"
