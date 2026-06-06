@@ -38,6 +38,7 @@
 ### 5. source_text 精确性原则
 - 每个场景的 `source_text` 必须是从原文中**直接摘抄的连续段落**，不得概括、重组或添加原文没有的词语。
 - 原文的每一段只能属于一个场景，不可跨场景复用同一段落。
+- 若输入原文带有段落编号（如 `P1`, `P2` ...），你必须额外输出 `source_paragraph_start` 与 `source_paragraph_end`，并确保所有场景的段落范围连续、无重叠、无遗漏。
 
 ---
 
@@ -50,16 +51,21 @@
 - `summary`：该场景的一句话情节概要（不可重复）
 - `intention`：创作意图，即这场戏在叙事上的功能
 - `source_text`：从原文中**直接摘抄**的连续段落，严禁概括或重组，且必须只包含本场景空间的原文内容
+- `source_paragraph_start`：场景对应原文的起始段落编号
+- `source_paragraph_end`：场景对应原文的结束段落编号
 
 ## 输出格式
 严格的JSON 对象，包含 `scenes` 数组，每个元素结构如下：
 ```json
 {
   "scene_id": "S01",
+  "chapter_ref": "num_01",
   "slug": "INT. 地点 - 时间",
   "location_ref": "LOC_...",
   "time_of_day": "日|夜|黄昏等",
   "summary": "场景概要",
   "intention": "创作意图",
+  "source_paragraph_start": 1,
+  "source_paragraph_end": 3,
   "source_text": "对应原文片段（连续段落，精确摘抄）"
 }
