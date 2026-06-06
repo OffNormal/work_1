@@ -13,7 +13,7 @@
 
 ## 任务要求
 1. 每个节拍可以是动作（action）或对白（dialogue）。
-2. 所有文本字段（包括emotion、line、description、parenthetical、subtext等）必须使用中文，禁止出现任何英文单词。
+2. 所有输出必须使用中文，包括 emotion 和 description。
 3. 必须严格遵守 `{beat_writing_standard}` 中的全部规范。
 4. 必须遵循以下**原子性铁律**：
    - 一个 beat 只能包含**一个主体**的**一个动作**或**一句对白**。
